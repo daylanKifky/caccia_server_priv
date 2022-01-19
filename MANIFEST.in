@@ -1,0 +1,4 @@
+include caccia_server/schema.sql
+graft caccia_server/static
+graft caccia_server/templates
+global-exclude *.pyc
