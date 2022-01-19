@@ -37,3 +37,20 @@ def cards_get():
 
     return jsonify(response)
     
+@bp.route('/', methods=('POST',))
+# @auth_check_dashboard(redirect_to_login=True) 
+def populate_msg():
+    
+    content = request.get_json()
+    db = get_db()
+    db.execute(
+            ''' UPDATE cards
+                SET image = ? ,
+                  enigma_type = ? ,
+                  question = ?,
+                  answer = ?
+                WHERE id = ?;''', (content['image'], content['enigma_type'], 
+                content['question'], content['answer'], content['id']))
+    
+    db.commit()
+    return jsonify({"status": "ok"})
