@@ -1,0 +1,34 @@
+{% extends 'index.html' %}
+
+{% if g.user %}
+    {% block header %}
+      	<h1>{% block title %}Cards{% endblock %}</h1>
+    {% endblock %}
+
+    {% block content %}
+	    {% if status == "error" %}
+	    		<h2>Error</h2>
+	    		<p><strong>Could not fetch data:</strong> {{reason}}</p>
+	    		<p>Please contact the administrator.</p>
+	    		<p>Error code: {{error_id}}</p>
+	    {% else %}
+	    	<script>
+	    		document.addEventListener("DOMContentLoaded", function(event) { 
+					const stats_data = JSON.parse({{data|tojson}}); // Make jinja print data as JSON
+				});
+
+	    	</script>
+	    	<section>
+		    	<h2>General</h2>
+	    		
+	    		<p>Rendering some template params as example:</p>
+
+	    		<p><strong>some_var:</strong> {{some_var}}</p>
+	    		<p><strong>foo:</strong> {{foo}}</p>
+
+	    	</section>
+		    	
+	    {% endif %}
+    {% endblock %}
+
+{% endif %}

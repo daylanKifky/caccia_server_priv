@@ -1,1 +1,3 @@
 X
+instance/*.sqlite
+instance/*firebase*.json

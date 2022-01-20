@@ -17,7 +17,7 @@ def create_app(test_config=None):
     app.config.from_mapping(
         SECRET_KEY='deva',
         DATABASE=os.path.join(app.instance_path, 'caccia_db.sqlite'),
-        # FIREBASE_CONF=os.path.join(app.instance_path, 'glt-crescere-pari-firebase-adminsdk-xalp7-a5263a899f.json'),
+        FIREBASE_CONF=os.path.join(app.instance_path, 'caccia-dev-firebase-adminsdk-mx38s-e97572b173.json'),
         # MIN_TIME_REQUESTS = 0.8,
         # FAKE_USERS = 100,
         # MAX_CSV_LINES = 100,
@@ -69,8 +69,8 @@ def create_app(test_config=None):
     # from . import messaggio
     # app.register_blueprint(messaggio.bp)
 
-    # from . import dashboard
-    # dashboard.register_blueprints(app)
+    from . import dashboard
+    dashboard.register_blueprints(app)
 
     @app.errorhandler(Exception)
     def _(error):

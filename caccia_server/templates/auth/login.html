@@ -1,0 +1,151 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Log In{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+	
+	<script src="https://www.gstatic.com/firebasejs/7.21.0/firebase-app.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/7.21.0/firebase-auth.js"></script>
+	<script src="{{ url_for('static', filename='spin.min.js') }}"></script>
+	<script>
+
+		// function flash_message(msg){
+		// 	let container = document.querySelector(".content");
+		// 	let el = `<div class="flash">{{ msg }}</div>`;
+		// }
+		// see: https://firebase.google.com/docs/web/setup#config-object
+		// https://support.google.com/firebase/answer/7015592?authuser=3
+		const firebaseConfig = {
+			  apiKey: "AIzaSyDMGfPgfMUW9d3vJs-C-WqOyM3zf8bK68w",
+			  authDomain: "caccia-dev.firebaseapp.com",
+			  projectId: "caccia-dev",
+			  storageBucket: "caccia-dev.appspot.com",
+			  messagingSenderId: "576406239769",
+			  appId: "1:576406239769:web:35c162994f516750bac888"
+			};
+
+	    firebase.initializeApp(firebaseConfig);
+
+	    let spinner_opts = {
+		     lines: 13,
+		     length: 28,
+		     width: 14,
+		     radius: 42,
+		     scale: 0.3,
+		     corners: 1,
+		     color: '#000',
+		     opacity: 0.25,
+		     rotate: 0,
+		     direction: 1,
+		     speed: 1,
+		     trail: 60,
+		     fps: 20,
+		     zIndex: 2e9,
+		     className: 'spinner',
+		     top: '50%',
+		     left: '50%',
+		     shadow: false,
+		     hwaccel: false,
+		     position: 'absolute',
+		    };
+	     let spinner = new Spinner(spinner_opts);
+
+	    
+	    document.addEventListener("DOMContentLoaded", function(event) { 
+		     let spinner_target = document.querySelector("#spinner-area");
+		    const form = document.querySelector("#login-form");
+		    form.addEventListener("submit", e => {
+		        e.preventDefault();
+		        spinner.spin(spinner_target)
+		        const fd = new FormData(form);
+		        const xhr = new XMLHttpRequest();
+
+		        const username = fd.get('username');
+		        const password = fd.get('password');
+
+		        console.log(username);
+		        console.log(password);
+
+			    firebase.auth().signInWithEmailAndPassword(username, password)
+			    .then(function(user){
+			    	console.log(user)
+
+			    	firebase.auth().currentUser.getIdToken(true)
+				    	.then(function(idToken) {
+				    		fd.delete('username');
+					        fd.delete('password');
+
+					        xhr.open("POST", form.action);
+					        xhr.setRequestHeader('x-access-tokens', idToken)
+					        xhr.send(fd);
+				    	  // Send token to your backend via HTTPS
+				    	  // ...
+				    	}).catch(function(error) {
+				    	  console.log(error);
+				    	});
+			    })
+
+			    .catch(function(error) {
+			      // Handle Errors here.
+			      var errorCode = error.code;
+			      var errorMessage = error.message;
+
+			      console.log(error);
+			      let msg = "L'utente richiesto non esiste o la password non è corretta";
+			      window.location.href = '/dashboard/error?msg='+msg+'&reason='+error.message; 
+			    });
+
+
+		        xhr.addEventListener("load", e => {
+		        	spinner.stop();
+		            console.log(e.target.responseText);
+		            console.log("LOAD " + e.target.status);
+
+		            if (e.target.status == 200){
+			        	console.log(e.target.status);
+			            window.location.href = "/dashboard";
+
+		            } else {
+		            	let reason = "unknown";
+		            	try	{
+		            		const response = JSON.parse(e.target.responseText)
+		            		reason = response["message"];
+		            		reason += ", code:" + e.target.status; 
+		            	}
+		            	catch(error){
+		            		reason = "unknown, error parsing JSON response, code:" + e.target.status;
+		            	}
+
+		            	let msg = "L'utente richiesto non ha permessi per accedere a questa sezione";
+			        	window.location.href = "/dashboard/error?msg="+ msg+"&reason="+reason; 
+		            }
+
+		        });
+		        xhr.addEventListener("error", e => {
+		        	console.log(e.target.status);
+		        	
+		        	console.log(spinner);
+		        	spinner.stop();
+		            window.location.href = "/dashboard/error";
+		        });
+		    });
+	    
+	    });//end document on load
+
+	</script>
+
+
+  <form method="post" id="login-form">
+    <label for="username">Username</label>
+    <input name="username" id="username" required>
+    <label for="password">Password</label>
+    <input type="password" name="password" id="password" required>
+	<div>
+		<div id="spinner-area"></div><input type="submit" value="Log In">
+	</div>
+
+    
+  </form>
+{% endblock %}

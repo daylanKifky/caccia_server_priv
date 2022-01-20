@@ -6,5 +6,5 @@ run_flask.sh
 setup.*
 MANIFEST.in
 Pipfile*
-pari_server/static/content
-pari_server/keys
+caccia_server/static/content
+caccia_server/keys

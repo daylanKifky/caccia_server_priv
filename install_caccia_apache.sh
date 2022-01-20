@@ -30,21 +30,21 @@ INSTALL_DIR=/var/www/flask_sites
 mkdir -p $INSTALL_DIR
 sudo chown -R $USER:$USER /var/www
 rm -rf $INSTALL_DIR/*
-cp -r ~/pari_server $INSTALL_DIR
+cp -r ~/caccia_server $INSTALL_DIR
 
 echo "= Creating convenience VARS"
-echo "alias cp-pari='sudo cp -r ~/pari_server $INSTALL_DIR'" >> ~/.bashrc
+echo "alias cp-caccia='sudo cp -r ~/caccia_server $INSTALL_DIR'" >> ~/.bashrc
 
 echo "= Init venv"
 cd $INSTALL_DIR
 echo creating virtual env in: $PWD
 python3 -m venv venv
 venv/bin/pip install --upgrade pip
-venv/bin/pip install -r pari_server/requirements.txt
+venv/bin/pip install -r caccia_server/requirements.txt
 
 echo "= Init DB"
 echo "Instance folder in $PWD"
-export FLASK_APP=pari_server
+export FLASK_APP=caccia_server
 rm -rf instance *.sqlite
 cp -r ~/instance $INSTALL_DIR
 venv/bin/flask init-db
@@ -57,16 +57,16 @@ echo 'DEBUG=True' > $INSTALL_DIR/instance/config.py
 echo "= Configure Apache"
 sudo a2enmod rewrite
 sudo a2enmod ssl
-cd $INSTALL_DIR/pari_server
-mv server_conf/pari_server.wsgi $INSTALL_DIR
-sudo mv server_conf/001-pari_server.conf /etc/apache2/sites-available/000-default.conf
-sudo mv server_conf/001-pari_server-ssl.conf /etc/apache2/sites-available/000-default-ssl.conf
+cd $INSTALL_DIR/caccia_server
+mv server_conf/caccia_server.wsgi $INSTALL_DIR
+sudo mv server_conf/001-caccia_server.conf /etc/apache2/sites-available/000-default.conf
+sudo mv server_conf/001-caccia_server-ssl.conf /etc/apache2/sites-available/000-default-ssl.conf
 sudo a2ensite 000-default-ssl.conf
 sudo service apache2 restart
 
 echo "= Cleanup"
 sudo chown -R www-data:www-data /var/www
-rm -rf ~/pari_server
+rm -rf ~/caccia_server
 rm -rf ~/instance
 
 echo "= Installation Done"
@@ -74,7 +74,7 @@ echo "== NOTE =="
 echo "The SSL certificates and configuration were not automatically installed."
 echo "They should be placed in:"
 echo "/etc/letsencrypt/options-ssl-apache.conf"
-echo "/etc/letsencrypt/live/api.crescerepari.com/fullchain.pem"
-echo "/etc/letsencrypt/live/api.crescerepari.com/privkey.pem"
+echo "/etc/letsencrypt/live/api.######.com/fullchain.pem"
+echo "/etc/letsencrypt/live/api.######.com/privkey.pem"
 echo "and automatic renew should be configured using certbot"
 echo "run \`systemctl list-timers | grep certbot\` to confirm auto-renew is set"

@@ -14,7 +14,7 @@ if [ -z $DEST_ADDR ] || [ -z $DEST_PATH ]; then
 fi
 
 echo creating requeriments.txt
-pipenv lock -r > pari_server/requirements.txt
+pipenv lock -r > caccia_server/requirements.txt
 
 echo sending to $DEST_ADDR:$DEST_PATH
 echo press a key to continue..
