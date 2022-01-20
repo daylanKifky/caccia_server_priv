@@ -1,18 +1,14 @@
 {% extends 'base.html' %}
 
 {% if g.user %}
-    {% block header %}
-      <h1>{% block title %}Dashboard{% endblock %}</h1>
-    {% endblock %}
+  {% block navigation %}
+  <nav id="navigation">
+    <a href="{{ url_for( 'cards_manager.index') }}">Cards</a>
+    <a href="{{ url_for( 'users_analytics.index') }}">Users</a>
+  </nav>
+  {% endblock %}
 
-    {% block navigation %}
-	    <nav id="navigation">
-	    	<a href="{{ url_for( 'cards_manager.index') }}">Cards</a>
-	    	<a href="{{ url_for( 'users_analytics.index') }}">Users</a>
-	   	</nav>  
-	{% endblock %}
-
-    {% block content %}
-      <p>Under construction: No content for now</p>
-    {% endblock %}
+  {% block content %}
+  <p>Under construction: No content for now</p>
+  {% endblock %}
 {% endif %}

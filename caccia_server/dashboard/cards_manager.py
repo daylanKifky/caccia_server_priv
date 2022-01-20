@@ -2,7 +2,9 @@ import datetime
 import traceback
 import json
 
+from ..cards import cards_get_dict
 from urllib.parse import urlparse, urljoin
+from caccia_server.cards import cards_get_dict
 
 from flask import (
 	Blueprint, current_app, g, redirect, 
@@ -23,5 +25,6 @@ bp = Blueprint('cards_manager', __name__, url_prefix='/dashboard/cards')
 @bp.route('/', methods=('GET',)) 
 @auth_check_dashboard(redirect_to_login=True)
 def index(user):
-	data = { "some_var" : "pippo", "foo": "pappa" }
-	return render_template('cards_manager.html', data=json.dumps(data), **data)
+	data = cards_get_dict()
+	# data = { "some_var" : "pippo", "foo": "pappa" }
+	return render_template('cards_manager.html', data=data)

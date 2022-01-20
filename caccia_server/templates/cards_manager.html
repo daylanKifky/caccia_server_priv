@@ -1,34 +1,97 @@
 {% extends 'index.html' %}
 
 {% if g.user %}
-    {% block header %}
-      	<h1>{% block title %}Cards{% endblock %}</h1>
-    {% endblock %}
+
+	{% block navigation %}
+	<nav id="navigation">
+	  <a class="current" href="{{ url_for( 'cards_manager.index') }}">Cards</a>
+	  <a href="{{ url_for( 'users_analytics.index') }}">Users</a>
+	</nav>
+	{% endblock %}
 
     {% block content %}
+		
 	    {% if status == "error" %}
 	    		<h2>Error</h2>
 	    		<p><strong>Could not fetch data:</strong> {{reason}}</p>
 	    		<p>Please contact the administrator.</p>
 	    		<p>Error code: {{error_id}}</p>
 	    {% else %}
-	    	<script>
-	    		document.addEventListener("DOMContentLoaded", function(event) { 
-					const stats_data = JSON.parse({{data|tojson}}); // Make jinja print data as JSON
-				});
-
-	    	</script>
-	    	<section>
-		    	<h2>General</h2>
-	    		
-	    		<p>Rendering some template params as example:</p>
-
-	    		<p><strong>some_var:</strong> {{some_var}}</p>
-	    		<p><strong>foo:</strong> {{foo}}</p>
-
+	    	<section style="display: flex; flex-direction: column; padding-top: 10px">  		
+				{% for item in data %}
+				<details>
+					<summary>Card {{item['id']}}</summary>
+					<div>
+						<form class="submitcard" action="/cards/" data-cardid={{item["id"]}}>
+							<p class="carddetailsp">
+								Type:
+								<select style="margin-left: 4px" name="enigmatype" id="enigmatype">
+									<option value="question" {% if item["enigma_type"] == "question" %}selected{% endif %}>Question</option>
+									<option value="other" {% if item["enigma_type"] == "other" %}selected{% endif %}>Other</option>
+								</select>
+							</p>
+							<p class="carddetailsp">Question: <input name="question" class="cardsinput"  style="margin-bottom: 0px;" type="text" value="{{item['question']}}"></p>
+							<p class="carddetailsp">Answer: <input name="answer" class="cardsinput" style="margin-bottom: 0px;" type="text" value="{{item['answer']}}"></p>
+							<div style="margin-top: 14px;"><input type="submit" value="Save" class="cardbutton"></div>
+							<p class="carddetailsp" style="font-size: small; font-style: oblique;">Last modified: {{item["modified"]}}</p>
+						</form>
+					</div>
+				</details>
+				{% endfor %}
 	    	</section>
 		    	
 	    {% endif %}
+		<script>
+			document.addEventListener("DOMContentLoaded", function(event) { 
+				let cardforms = document.querySelectorAll(".submitcard")
+				cardforms.forEach((form) => {
+					form.addEventListener("submit", handleFormSubmit);
+				})
+			});
+			async function handleFormSubmit(event) {
+
+				event.preventDefault()
+				const form = event.currentTarget;
+				const url = form.action;
+			
+				try {
+
+					const formData = new FormData(form);
+					formData.append("id", form.dataset.cardid)
+					formData.append("image", "immaginedibruno")
+					const responseData = await postFormDataAsJson({ url, formData });
+
+					console.log({ responseData });
+			
+				} catch (error) {
+					console.error(error);
+				}
+			}
+			async function postFormDataAsJson({ url, formData }) {
+
+				const plainFormData = Object.fromEntries(formData.entries());
+				const formDataJsonString = JSON.stringify(plainFormData);
+			
+				const fetchOptions = {
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+						"Accept": "application/json"
+					},
+					body: formDataJsonString,
+				};
+			
+				const response = await fetch(url, fetchOptions);
+			
+				if (!response.ok) {
+					const errorMessage = await response.text();
+					throw new Error(errorMessage);
+				}
+			
+				return response.json();
+			}
+		</script>
     {% endblock %}
 
+	
 {% endif %}

@@ -1,9 +1,13 @@
 {% extends 'index.html' %}
 
 {% if g.user %}
-    {% block header %}
-      	<h1>{% block title %}Users{% endblock %}</h1>
-    {% endblock %}
+
+	{% block navigation %}
+	<nav id="navigation">
+	  <a href="{{ url_for( 'cards_manager.index') }}">Cards</a>
+	  <a class="current" href="{{ url_for( 'users_analytics.index') }}">Users</a>
+	</nav>
+	{% endblock %}
 
     {% block content %}
 	    {% if status == "error" %}

@@ -5,7 +5,7 @@ CREATE TABLE cards(
     id INTEGER PRIMARY KEY,
     modified TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     image TEXT NOT NULL,
-    enigma_type VARCHAR(30), -- question, radio_button, physical
+    enigmatype VARCHAR(30), -- question, radio_button, physical
     question TEXT NOT NULL,
     answer TEXT NOT NULL
 );
