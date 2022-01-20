@@ -40,9 +40,6 @@ def login(user):
 @bp.route('/', methods=('GET',)) 
 @auth_check_dashboard(redirect_to_login=True)
 def index(user):
-	user = 1 #418
-    
-	print("#"*80, user)
 	if user:
  		return redirect(url_for("cards_manager.index"))
 	else:

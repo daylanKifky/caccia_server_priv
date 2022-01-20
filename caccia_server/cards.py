@@ -26,7 +26,6 @@ def cards_get():
             response.append({k:row[k] for k in row.keys()})
         
     except Exception as e:
-        raise e
         # err_id = u.get_error_id()
 
         # current_app.logger.error('[ Register game start error | error_id: %s ] %s\n%s---' % (err_id, e, traceback.format_exc()) )
