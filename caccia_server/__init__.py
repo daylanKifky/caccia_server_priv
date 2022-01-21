@@ -40,9 +40,9 @@ def create_app(test_config=None):
     except OSError:
         pass
 
-    @app.route('/')
-    def not_found():
-        return make_response(jsonify({'message': 'not found'}), 404)
+    # @app.route('/')
+    # def not_found():
+    #     return make_response(jsonify({'message': 'not found'}), 404)
 
     # a simple page that report status
     @app.route('/status')
@@ -61,6 +61,8 @@ def create_app(test_config=None):
 
     from . import cards
     app.register_blueprint(cards.bp)
+    app.register_blueprint(cards.api.bp)
+
     # app.add_url_rule('/base', endpoint='gamebase')
 
     # from . import quiz
@@ -75,7 +77,8 @@ def create_app(test_config=None):
     @app.errorhandler(Exception)
     def _(error):
         if isinstance(error, NotFound):
-            return redirect(url_for('not_found'))
+            return make_response( "resource not found", 404 )
+            # return redirect(url_for('not_found'))
 
         # err_id = u.get_error_id()
         err_id = 418

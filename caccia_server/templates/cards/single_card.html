@@ -1,0 +1,14 @@
+{% extends 'cards/index.html' %}
+
+{% block content %}
+<h2>CARD: {{card_data['id']}}</h2>
+<ul>
+  {% for key, value in card_data.items() %}
+    <li><strong>{{key}}:</strong> {{value}}</li>
+  {% endfor %}
+</ul>
+
+<a href="{{prev_card}}"> [ <--Prev ]</a>
+<a href="{{next_card}}"> [ Next--> ]</a>
+
+{% endblock %}

@@ -24,4 +24,4 @@ bp = Blueprint('users_analytics', __name__, url_prefix='/dashboard/users')
 @auth_check_dashboard(redirect_to_login=True)
 def index(user):
 	data = { "users_n" : 345, "medium_iq": 6.5 }
-	return render_template('users_analytics.html', data=json.dumps(data), **data)
+	return render_template('dashboard/users_analytics.html', data=json.dumps(data), **data)
