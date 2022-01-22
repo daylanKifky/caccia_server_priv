@@ -1,7 +1,11 @@
 {% extends 'cards/index.html' %}
 
 {% block content %}
-<h2>Welcome to the cards game!</h2>
-<p>start by clicking the button below</p>
-<a href="{{first_card}}"> [ Start ]</a>
+<div style="display: flex; flex-direction:column; align-items:center">
+    <h2>Welcome to the cards game!</h2>
+    <p>start by clicking the button below</p>
+    <button class="submitanswerbutton">Start</button>
+</div>
+
+<!-- <a href="{{first_card}}"> [ Start ]</a> -->
 {% endblock %}
