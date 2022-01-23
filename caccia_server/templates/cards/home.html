@@ -34,20 +34,29 @@
     <p id="introp" style="text-align: center;">Benvenuto nella caccia al tesoro!<br>Per iniziare tocca il pulsate in
         basso.</p>
     <div style="margin-top:16px" id="spinner-area"></div>
-    <div style="margin-top:12px" id="qr-reader" style="width:90%"></div>
+    <div style="margin-top:12px; margin-bottom:8px" id="qr-reader" style="width:90%"></div>
     <button style="width:100%" id="startbutton" class="submitanswerbutton">Start</button>
+    <button id="scanbutton" class="scanqrbutton">Scan</button>
+
 </div>
 
 
 <script>
     document.addEventListener("DOMContentLoaded", function (event) {
-        let spinner_target = document.querySelector("#spinner-area");
+        const spinner_target = document.querySelector("#spinner-area");
         spinner_target.hidden = true
+        const scanbutton = document.querySelector("#scanbutton");
+        scanbutton.hidden = true
+
         const startbutton = document.getElementById("startbutton")
         const introp = document.getElementById("introp")
+
         var resultContainer = document.getElementById('qr-reader-results');
 
+        let lastQRDecoded
+
         startbutton.addEventListener('click', event => {
+            // Init qr scanner
             spinner.spin(spinner_target)
             spinner_target.hidden = false
             startbutton.hidden = true
@@ -68,18 +77,20 @@
                             qrbox: { width: 500, height: 500 }  // Optional, if you want bounded box UI
                         },
                         (decodedText, decodedResult) => {
-                            if (confirm("Procedere alla pagina trovata?")) {
-                                window.open(decodedText)
-                            }
+                            scanbutton.style.backgroundColor = "#01b615"
+                            lastQRDecoded = decodedText
                         },
                         (errorMessage) => {
-                            // parse error, ignore it.
+                            lastQRDecoded = null
+                            scanbutton.style.backgroundColor = "#b60121"
+
                         })
                         .then(
+                            // Start succeeded 
                             () => {
                                 spinner.stop();
                                 spinner_target.hidden = true
-
+                                scanbutton.hidden = false
                             }
                         )
                         .catch((err) => {
@@ -89,9 +100,12 @@
             }).catch(err => {
                 // handle err
             });
+        });
 
-
-
+        scanbutton.addEventListener('click', event => {
+            if (lastQRDecoded != null) {
+                window.location.href = lastQRDecoded
+            }
         });
     });
 </script>
