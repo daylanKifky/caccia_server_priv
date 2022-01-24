@@ -9,12 +9,26 @@ strong {
 	font-weight: 600;
 }
 
+@keyframes cardin {
+	from {
+		transform: translateY(-250%)
+	}
+
+	to {
+		transform: translateY(0%)
+	}
+}
+
+
 body {
 	/*! max-width: 960px; */
 	margin: 0 10px;
 	background: white;
 	/*! border-radius: 10px; */
 	box-shadow: 0px 2px 0px 2px #0000001c;
+	padding: 20px;
+	animation-name: cardin;
+	animation-duration: 1s;
 }
 
 h1 {
@@ -41,17 +55,23 @@ nav {
 	background-color: transparent;
 	display: flex;
 	align-items: center;
-	padding: 0 0.5rem;
+	padding: 0 0rem;
+	margin-bottom: 12px;
+	justify-content: center;
 }
 
 nav img {
 	width: 100px;
-	padding: 20px;
+	/*! padding: 20px; */
+	/*! flex: 1; */
 }
 
 nav h1 {
-	flex: auto;
-	margin: 0;
+	/*! flex: 1; */
+	margin-left: 10px;
+	font-weight: bold;
+	font-family: "Noto Sans", sans-serif;
+
 }
 
 nav h1 a {
@@ -72,13 +92,14 @@ nav ul li a, nav ul li span, header .action {
 }
 
 .content {
-	padding: 0 1.1rem 1rem;
+	/*! padding: 0 1.1rem 1rem; */
 }
 
 .content>header {
-	border-bottom: 3px solid lightgray;
+	border-bottom: 2px solid lightgray;
 	display: flex;
 	align-items: flex-end;
+	margin-bottom: 10px;
 }
 
 .content>header h1 {
@@ -309,12 +330,36 @@ details[open] {
 	margin: 4px;
 	min-width: 10em;
 }
+
 .cardsinput {
-    background-color: transparent;
-    flex: 1;
-    margin-left: 4px;
-    border: 1px solid darkgrey;
+	background-color: transparent;
+	flex: 1;
+	margin-left: 4px;
+	border: 1px solid darkgrey;
 }
+
+.scanqrbutton {
+	background: #b60121;
+	border-width: 0px;
+	color: white;
+	padding: 8px;
+	box-shadow: 0px 2px 0px 1px #bb7777a3;
+	font-weight: bold;
+	width: 60px;
+	height: 60px;
+	border-radius: 50%;
+	margin: 10px;
+}
+
+.submitanswerbutton {
+	background: #117ba6cf;
+	border-width: 0px;
+	color: white;
+	padding: 8px;
+	box-shadow: 0px 2px 2px 1px #00000021;
+	font-weight: bold;
+}
+
 /* ========= CHARTS ==========*/
 
 .chart_container {

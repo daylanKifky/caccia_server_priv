@@ -58,7 +58,7 @@
 
 					const formData = new FormData(form);
 					formData.append("id", form.dataset.cardid)
-					formData.append("image", "immaginedibruno")
+					formData.append("image", "test")
 					const responseData = await postFormDataAsJson({ url, formData });
 
 					console.log({ responseData });
