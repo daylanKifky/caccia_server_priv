@@ -21,9 +21,9 @@ def create_app(test_config=None):
         # MIN_TIME_REQUESTS = 0.8,
         # FAKE_USERS = 100,
         # MAX_CSV_LINES = 100,
-        # ALLOWED_IMGS_EXT = ['.jpg', '.jpeg', '.JPG', '.JPEG', '.PNG', '.png'],
-        # ALLOWED_IMGS_TYPES = ['png', 'jpeg'],
-        # MAX_IMG_SIZE = 2 * 1024 * 1024, # 2Mb
+        ALLOWED_IMGS_EXT = ['.jpg', '.jpeg', '.JPG', '.JPEG', '.PNG', '.png'],
+        ALLOWED_IMGS_TYPES = ['png', 'jpeg'],
+        MAX_IMG_SIZE = 2 * 1024 * 1024, # 2Mb
         # DASHBOARD_USER_CSV = 'dashboard_users.csv'
     )
 

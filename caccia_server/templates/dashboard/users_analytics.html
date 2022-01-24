@@ -33,6 +33,16 @@
 	    	</section>
 		    	
 	    {% endif %}
+
+	    <h3>--------- UPLOAD FORM FOR TEST----------</h3>
+
+	    <form method="post" action="/cards/image/" enctype="multipart/form-data">
+			<label for="file">Select image to upload:</label>
+			<input type="file" name="file">
+			<input type="submit" value="Upload">
+	    </form>
+
+
     {% endblock %}
 
 {% endif %}

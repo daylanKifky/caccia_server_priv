@@ -8,6 +8,7 @@ from flask import (
 )
 from werkzeug.exceptions import abort
 from functools import wraps
+from os.path import join
 
 from ..db import get_db
 from .. import utils as u
@@ -87,3 +88,35 @@ def populate_msg():
 
 
     return jsonify({"status": "ok"})
+
+
+@bp.route('/image/', methods=('POST',)) 
+# @auth_check_dashboard(redirect_to_login=True)
+def image(user=None):
+    try:
+        if 'file' not in request.files:
+            return jsonify({"status": "image not saved, file not present in request"})
+
+        file = request.files['file']
+        # if user does not select file, browser also
+        # submit a empty part without filename
+        if file.filename == '':
+            return jsonify({"status": "image not saved, empty file in request"})
+
+        saved_image, image_path = u.save_image(file)
+        image_url = join(request.host_url, image_path)
+
+        # if file and allowed_file(file.filename):
+        #     filename = secure_filename(file.filename)
+        #     file.save(os.path.join(app.config['IMG_UPLOAD_FOLDER'], filename))
+
+    except Exception as e:
+        err_id = u.get_error_id()
+
+        current_app.logger.error('[ Post cards image error | error_id: %s ] %s\n%s---' % (err_id, e, traceback.format_exc()) )
+
+        int_error = jsonify({"status": "error", "reason": "internal error", "error_id": err_id})
+        return make_response( int_error, 500 )
+    
+
+    return jsonify({"status": "ok", "saved_image": saved_image, "image_url": image_url})
