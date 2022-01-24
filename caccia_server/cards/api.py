@@ -103,17 +103,28 @@ def image(user=None):
         if file.filename == '':
             return jsonify({"status": "image not saved, empty file in request"})
 
+        if 'Content-length' not in request.headers:
+            raise u.Download_Image_Error("No Content-length header in request")
+
+        if int(request.headers['Content-length']) > current_app.config['MAX_IMG_SIZE']:
+            raise u.Download_Image_Error("The image {} is too big, max allowed {}kb".format(file.filename, current_app.config['MAX_IMG_SIZE']/1024))
+    
         saved_image, image_path = u.save_image(file)
         image_url = join(request.host_url, image_path)
 
-        # if file and allowed_file(file.filename):
-        #     filename = secure_filename(file.filename)
-        #     file.save(os.path.join(app.config['IMG_UPLOAD_FOLDER'], filename))
+    except u.Download_Image_Error as e:
+        err_id = u.get_error_id()
+
+        int_error = jsonify({"status": "error", "reason": "Image upload error: {}".format(e), "error_id": err_id})
+        current_app.logger.error('[ Post cards image Upload error | error_id: %s ] %s\n%s---' % (err_id, e, traceback.format_exc()) )
+
+        return make_response( int_error, 500 )
+
 
     except Exception as e:
         err_id = u.get_error_id()
 
-        current_app.logger.error('[ Post cards image error | error_id: %s ] %s\n%s---' % (err_id, e, traceback.format_exc()) )
+        current_app.logger.error('[ Post cards generic image error | error_id: %s ] %s\n%s---' % (err_id, e, traceback.format_exc()) )
 
         int_error = jsonify({"status": "error", "reason": "internal error", "error_id": err_id})
         return make_response( int_error, 500 )

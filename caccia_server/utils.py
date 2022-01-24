@@ -113,10 +113,7 @@ def save_image(file, path='static/content'):
 	ext = splitext(file.filename)
 
 	if ext[1] not in current_app.config['ALLOWED_IMGS_EXT']:
-		flash("The image {} has an invalid extension, allowed: {}".format(img_name, current_app.config['ALLOWED_IMGS_EXT']))
-		return
-
-	# flash("Image extension: {}".format(ext[1]))
+		raise Download_Image_Error("The image {} has an invalid extension, allowed: {}".format(file.filename, current_app.config['ALLOWED_IMGS_EXT']))
 
 	data = file.stream.read()
 	md5_hash = hashlib.md5()
@@ -124,14 +121,20 @@ def save_image(file, path='static/content'):
 	save_image_name = "{}{}".format(md5_hash.hexdigest(), ext[1])
 	save_image_path = join(path, save_image_name)
 
-	# flash("Image hash: {}".format(save_image_name))
-
 	file_path = join(dirname(realpath(__file__)), path)
 	save_image_as = join(file_path, save_image_name)
 
 	if not isfile(save_image_as): #save the image only if it doesnt exists
 		with open(save_image_as, "wb") as f:
 			f.write(data)
+
+	img_type = imghdr.what(save_image_as)
+	current_app.logger.debug("Saved image %s, type: %s", save_image_as, img_type)
+
+	if img_type not in current_app.config['ALLOWED_IMGS_TYPES']:
+		remove(save_image_as)
+		current_app.logger.debug("Removed image %s, type: %s", save_image_as, img_type)
+		raise Download_Image_Error("The image {} has an invalid type, allowed: {}".format(file.filename, current_app.config['ALLOWED_IMGS_TYPES']))
 
 	return save_image_name, save_image_path
 
