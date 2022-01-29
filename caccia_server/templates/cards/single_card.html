@@ -1,21 +1,48 @@
 {% extends 'cards/index.html' %}
 
 {% block content %}
+<!-- Overrides style.css body to add card animation -->
+<style>
+  body {
+    animation-name: cardin !important; 
+    animation-duration: 1s !important; 
+  }
+</style>
+<!-- Card content -->
 <div style="display: flex; flex-direction:column; align-items:center">
   <img style="padding: 8px;min-width:200px" src="{{card_data["image"]}}" alt="">
+  <!-- Single string answer enigma -->
   {% if card_data["enigmatype"] == "question" %}
     <p style="align-self:baseline; margin-bottom: 4px">{{card_data["question"].capitalize()}}</p>
     <form style="width:100%" id="answerform" action="">
       <input type="text" name="questionanswer" id="" autocomplete="off">
       <input type="submit" class="submitanswerbutton" value="Invia risposta">
     </form>
-  {% elif condition2 %}
-    
-  {% else %}
+  <!-- Radio buttons answer enigma -->
+  {% elif card_data["enigmatype"] == "radiobutton"  %}
+    <p style="align-self:baseline; margin-bottom: 4px">{{card_data["question"].capitalize()}}</p>
+    <form style="width:100%" id="answerform" action="" autocomplete="off"> 
+      <div class="radio-button">
+        <input type="radio" id="option0" name="radioanswer" value="{{card_data["answer"].split("|")[0]}}">
+        <label for="option0">{{card_data["answer"].split("|")[0]}}</label>
+      </div>
+      <div class="radio-button"> 
+        <input type="radio" id="option1" name="radioanswer" value="{{card_data["answer"].split("|")[1]}}">
+        <label for="option1">{{card_data["answer"].split("|")[1]}}</label>
+      </div>
+      <div class="radio-button">
+        <input type="radio" id="option2" name="radioanswer" value="{{card_data["answer"].split("|")[2]}}">
+        <label for="option2">{{card_data["answer"].split("|")[2]}}</label>
+      </div>
+      <input type="submit" class="submitanswerbutton" value="Invia risposta">
+    </form>
+  <!-- QR Code answer enigma -->
+  {% elif card_data["enigmatype"] == "physical" %}
     
   {% endif %}
-  
 </div>
+
+
 <!-- <h2>CARD: {{card_data['id']}}</h2>
 <ul>
   {% for key, value in card_data.items() %}

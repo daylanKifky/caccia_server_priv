@@ -10,9 +10,9 @@ CREATE TABLE cards(
     answer TEXT NOT NULL
 );
 
-INSERT INTO `cards` VALUES (0, CURRENT_TIMESTAMP, "https://via.placeholder.com/150", 'question', "do you like puppies?",  'yes' );
-INSERT INTO `cards` VALUES (1, CURRENT_TIMESTAMP, "https://via.placeholder.com/150", 'radiobutton', "do you like puppies?",  'yes|no|maybe' );
-INSERT INTO `cards` VALUES (2, CURRENT_TIMESTAMP, "https://via.placeholder.com/150", 'physical', "do you like puppies?",  'yes' );
+INSERT INTO `cards` VALUES (0, CURRENT_TIMESTAMP, "https://via.placeholder.com/150", 'question', "question with single answer?",  'yes' );
+INSERT INTO `cards` VALUES (1, CURRENT_TIMESTAMP, "https://via.placeholder.com/150", 'radiobutton', "question with multiple answer?",  'yes' );
+INSERT INTO `cards` VALUES (2, CURRENT_TIMESTAMP, "https://via.placeholder.com/150", 'physical', "question with QR code to scan?",  'yes' );
 INSERT INTO `cards` VALUES (3, CURRENT_TIMESTAMP, "https://via.placeholder.com/150", 'question', "do you like puppies?",  'yes' );
 INSERT INTO `cards` VALUES (4, CURRENT_TIMESTAMP, "https://via.placeholder.com/150", 'question', "do you like puppies?",  'yes' );
 INSERT INTO `cards` VALUES (5, CURRENT_TIMESTAMP, "https://via.placeholder.com/150", 'question', "do you like puppies?",  'yes' );
