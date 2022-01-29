@@ -1,6 +1,36 @@
 {% extends 'cards/index.html' %}
 
 {% block content %}
+
+<script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+<script src="{{ url_for('static', filename='spin.min.js') }}"></script>
+<script>
+    let spinner_opts = {
+        lines: 13,
+        length: 28,
+        width: 14,
+        radius: 42,
+        scale: 0.3,
+        corners: 1,
+        color: '#000',
+        opacity: 0.25,
+        rotate: 0,
+        direction: 1,
+        speed: 1,
+        trail: 60,
+        fps: 20,
+        zIndex: 2e9,
+        className: 'spinner',
+        top: '50%',
+        left: '50%',
+        shadow: false,
+        hwaccel: false,
+        position: 'absolute',
+    };
+    let spinner = new Spinner(spinner_opts);
+</script>
+
+
 <!-- Overrides style.css body to add card animation -->
 <style>
   body {
@@ -10,7 +40,7 @@
 </style>
 <!-- Card content -->
 <div style="display: flex; flex-direction:column; align-items:center">
-  <img style="padding: 8px;min-width:200px" src="{{card_data["image"]}}" alt="">
+  <img style="padding: 8px;min-width:200px" id="questionimage" src="{{card_data["image"]}}" alt="">
   <!-- Single string answer enigma -->
   {% if card_data["enigmatype"] == "question" %}
     <p style="align-self:baseline; margin-bottom: 4px">{{card_data["question"].capitalize()}}</p>
@@ -23,22 +53,29 @@
     <p style="align-self:baseline; margin-bottom: 4px">{{card_data["question"].capitalize()}}</p>
     <form style="width:100%" id="answerform" action="" autocomplete="off"> 
       <div class="radio-button">
-        <input type="radio" id="option0" name="radioanswer" value="{{card_data["answer"].split("|")[0]}}">
+        <input type="radio" id="option0" name="questionanswer" value="{{card_data["answer"].split("|")[0]}}">
         <label for="option0">{{card_data["answer"].split("|")[0]}}</label>
       </div>
       <div class="radio-button"> 
-        <input type="radio" id="option1" name="radioanswer" value="{{card_data["answer"].split("|")[1]}}">
+        <input type="radio" id="option1" name="questionanswer" value="{{card_data["answer"].split("|")[1]}}">
         <label for="option1">{{card_data["answer"].split("|")[1]}}</label>
       </div>
       <div class="radio-button">
-        <input type="radio" id="option2" name="radioanswer" value="{{card_data["answer"].split("|")[2]}}">
+        <input type="radio" id="option2" name="questionanswer" value="{{card_data["answer"].split("|")[2]}}">
         <label for="option2">{{card_data["answer"].split("|")[2]}}</label>
       </div>
       <input type="submit" class="submitanswerbutton" value="Invia risposta">
     </form>
   <!-- QR Code answer enigma -->
   {% elif card_data["enigmatype"] == "physical" %}
-    
+  <div style="display: flex; flex-direction:column; align-items: center;">
+    <p style="align-self:baseline; margin-bottom: 4px">{{card_data["question"].capitalize()}}</p>
+    <div style="margin-top:16px" id="spinner-area"></div>
+    <div style="margin-top:12px; margin-bottom:8px" id="qr-reader" style="width:90%"></div>
+    <button style="width:100%" id="startbutton" class="submitanswerbutton">Start scan</button>
+    <button id="scanbutton" class="scanqrbutton">No QR</button>
+
+  </div>
   {% endif %}
 </div>
 
@@ -54,7 +91,7 @@
 <a href="{{next_card}}"> [ Next-> ]</a>
  -->
 
- <script>
+<script>
   document.addEventListener("DOMContentLoaded", function(event) { 
     let answerform = document.getElementById("answerform")
     answerform.addEventListener("submit", handleAnswerSubmit);
@@ -63,13 +100,87 @@
   function handleAnswerSubmit() {
     event.preventDefault()
     try {
-
+      // Submit answer
       const formData = new FormData(answerform);
-      console.log(formData.get("questionanswer").toLowerCase() == "{{card_data["answer"]}}".toLowerCase())
+      formdata = formData.get("questionanswer")
+      if (formdata != null) {
+        alert(formdata.toLowerCase())
+      }
   
     } catch (error) {
       console.error(error);
     }
   }
+</script>
+<script>
+  document.addEventListener("DOMContentLoaded", function (event) {
+      const spinner_target = document.querySelector("#spinner-area");
+      spinner_target.hidden = true
+      const scanbutton = document.querySelector("#scanbutton");
+      scanbutton.hidden = true
+
+      const startbutton = document.getElementById("startbutton")
+      const questionimage = document.getElementById("questionimage")
+
+      var resultContainer = document.getElementById('qr-reader-results');
+
+      let lastQRDecoded
+
+      startbutton.addEventListener('click', event => {
+          // Init qr scanner
+          spinner.spin(spinner_target)
+          spinner_target.hidden = false
+          startbutton.hidden = true
+          questionimage.hidden = true
+          // This method will trigger user permissions
+          Html5Qrcode.getCameras().then(devices => {
+              /**
+               * devices would be an array of objects of type:
+               * { id: "id", label: "label" }
+               */
+              if (devices && devices.length) {
+                  var cameraId = devices[1].id;
+                  const html5QrCode = new Html5Qrcode(/* element id */ "qr-reader");
+                  html5QrCode.start(
+                      cameraId,
+                      {
+                          fps: 10,    // Optional, frame per seconds for qr code scanning
+                          qrbox: { width: 500, height: 500 }  // Optional, if you want bounded box UI
+                      },
+                      (decodedText, decodedResult) => {
+                          scanbutton.style.backgroundColor = "#01b615"
+                          lastQRDecoded = decodedText
+                          scanbutton.innerText = "Scan!"
+                      },
+                      (errorMessage) => {
+                          lastQRDecoded = null
+                          scanbutton.style.backgroundColor = "#3a3737f5"
+                          scanbutton.innerText = "No QR"
+
+                      })
+                      .then(
+                          // Start succeeded 
+                          () => {
+                              spinner.stop();
+                              spinner_target.hidden = true
+                              scanbutton.hidden = false
+                          }
+                      )
+                      .catch((err) => {
+                          // Start failed, handle it.
+                      });
+              }
+          }).catch(err => {
+              // handle err
+          });
+      });
+
+      scanbutton.addEventListener('click', event => {
+          if (lastQRDecoded != null) {
+              // Submit answer
+              alert(lastQRDecoded)
+          }
+      });
+  });
 </script>
 {% endblock %}
