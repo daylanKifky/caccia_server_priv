@@ -1,5 +1,5 @@
 # import datetime
-# import traceback
+import traceback
 
 # from urllib.parse import urlparse, urljoin
 
@@ -11,9 +11,9 @@ from flask import (
 from werkzeug.exceptions import abort
 # from functools import wraps
 
-# from ..db import get_db, sqlite3
+from .db import get_db, sqlite3
 # from ..auth import auth_check_dashboard, User
-# from .. import utils as u
+from . import utils as u
 
 # from . import cards_manager
 # from . import users_analytics
@@ -23,8 +23,14 @@ bp = Blueprint('user', __name__, url_prefix='/user')
 MAX_CARDS = 10
 
 def create_user_in_db(username):
-	print("CREATED USER IN DB:", username)
-	return 418
+	db = get_db()
+	res = db.execute("""INSERT INTO users(username) VALUES (?)""", (username,))
+	db.commit()
+	userrow = db.execute("SELECT * FROM users ORDER BY id DESC LIMIT 1;").fetchone()
+	uid = userrow["id"]
+	current_app.logger.info('User created, id: {}, username: {}'.format(uid, username))
+
+	return uid
 
 
 @bp.route('/', methods=('POST',)) 
@@ -33,10 +39,10 @@ def create_user():
 
 	try:
 		uid = create_user_in_db(username)
-	except Exception as e:
+	except Exception as error:
 		err_id = u.get_error_id()
 
-		app.logger.error('[ Error creating user | error_id: %s ] %s\n%s---' % (err_id, error, traceback.format_exc()) )
+		current_app.logger.error('[ Error creating user | error_id: %s ] %s\n%s---' % (err_id, error, traceback.format_exc()) )
 
 		flash("Error creating user, please try again or contact the system administrator. Error_id: {}".format(err_id))
 
