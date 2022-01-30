@@ -93,8 +93,10 @@
 
 <script>
   document.addEventListener("DOMContentLoaded", function(event) { 
-    let answerform = document.getElementById("answerform")
-    answerform.addEventListener("submit", handleAnswerSubmit);
+    if ("{{ card_data["enigmatype"] }}" != "physical" ) {
+      let answerform = document.getElementById("answerform")
+      answerform.addEventListener("submit", handleAnswerSubmit);
+    }
   });
 
   function handleAnswerSubmit() {
@@ -113,7 +115,8 @@
   }
 </script>
 <script>
-  document.addEventListener("DOMContentLoaded", function (event) {
+  if ("{{ card_data["enigmatype"] }}" == "physical" ) {
+    document.addEventListener("DOMContentLoaded", function (event) {
       const spinner_target = document.querySelector("#spinner-area");
       spinner_target.hidden = true
       const scanbutton = document.querySelector("#scanbutton");
@@ -182,5 +185,7 @@
           }
       });
   });
+  }
+  
 </script>
 {% endblock %}

@@ -54,7 +54,7 @@
 									<input style="margin-left:4px" type="file" name="file">
 								</p>
 							</div>
-							<img style="padding: 8px;min-width:100px" id="questionimage" src="{{item["image"]}}" alt="">
+							<img style="padding: 8px;min-width:100px; max-width:200px" id="questionimage" src="{{item["image"]}}" alt="">
 								
 
 							<div style="margin-top: 14px;"><input type="submit" value="Save" class="cardbutton"></div>
@@ -131,7 +131,11 @@
 				try {
 
 					const formData = new FormData(form);
-					image_url = "/static/content\\" + await postImage(form.querySelector('input[type="file"]').files[0])
+					if (form.querySelector('input[type="file"]').files.length > 0) {
+						image_url = "/static/content\\" + await postImage(form.querySelector('input[type="file"]').files[0])
+					} else {
+						image_url = form.querySelector("img").src
+					} 
 					if (formData.get("enigmatype") == "radiobutton") {
 						formData.set("answer", formData.get("answer") + "|" + formData.get("otheroption1") + "|" + formData.get("otheroption2"))
 					}
@@ -140,6 +144,8 @@
 					formData.append("id", form.dataset.cardid);
 					formData.append("image", image_url)
 					const responseData = await postFormDataAsJson({ url, formData });
+
+					form.querySelector("img").src = image_url
 
 					console.log({ responseData });
 			
@@ -198,7 +204,7 @@
 					const errorMessage = await response.text();
 					throw new Error(errorMessage);
 				}
-			
+				
 				return response.json();
 			}
 		</script>
