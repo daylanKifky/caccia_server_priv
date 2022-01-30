@@ -21,9 +21,9 @@ def create_app(test_config=None):
         # MIN_TIME_REQUESTS = 0.8,
         # FAKE_USERS = 100,
         # MAX_CSV_LINES = 100,
-        # ALLOWED_IMGS_EXT = ['.jpg', '.jpeg', '.JPG', '.JPEG', '.PNG', '.png'],
-        # ALLOWED_IMGS_TYPES = ['png', 'jpeg'],
-        # MAX_IMG_SIZE = 2 * 1024 * 1024, # 2Mb
+        ALLOWED_IMGS_EXT = ['.jpg', '.jpeg', '.JPG', '.JPEG', '.PNG', '.png'],
+        ALLOWED_IMGS_TYPES = ['png', 'jpeg'],
+        MAX_IMG_SIZE = 2 * 1024 * 1024, # 2Mb
         # DASHBOARD_USER_CSV = 'dashboard_users.csv'
     )
 
@@ -77,11 +77,10 @@ def create_app(test_config=None):
     @app.errorhandler(Exception)
     def _(error):
         if isinstance(error, NotFound):
-            return make_response( "resource not found", 404 )
+            return make_response( "not found", 404 )
             # return redirect(url_for('not_found'))
 
-        # err_id = u.get_error_id()
-        err_id = 418
+        err_id = u.get_error_id()
 
         app.logger.error('[ Generic error | error_id: %s ] %s\n%s---' % (err_id, error, traceback.format_exc()) )
 

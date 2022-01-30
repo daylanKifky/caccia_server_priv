@@ -22,7 +22,7 @@
 				<details>
 					<summary>Card {{item['id']}}</summary>
 					<div>
-						<form class="submitcard" action="/cards/" data-cardid={{item["id"]}} autocomplete="off">
+						<form class="submitcard" action="/cards/" data-cardid={{item["id"]}} autocomplete="off" enctype="multipart/form-data">
 							<p class="carddetailsp">
 								Type:
 								<select style="margin-left: 4px" name="enigmatype" id="enigmatype" class="enigmatype" data-cardid={{item["id"]}}>
@@ -48,6 +48,15 @@
 									<input name="otheroption2" class="cardsinput" style="margin-bottom: 0px;" type="text" value="{{item['answer'].split('|')[2]}}">
 								</p>
 							</div>
+							<div>
+								<p class="carddetailsp" >
+									Image: 
+									<input style="margin-left:4px" type="file" name="file">
+								</p>
+							</div>
+							<img style="padding: 8px;min-width:100px" id="questionimage" src="{{item["image"]}}" alt="">
+								
+
 							<div style="margin-top: 14px;"><input type="submit" value="Save" class="cardbutton"></div>
 							<p class="carddetailsp" style="font-size: small; font-style: oblique;">Last modified: {{item["modified"]}}</p>
 						</form>
@@ -113,20 +122,23 @@
 
 			async function handleFormSubmit(event) {
 
-				event.preventDefault()
+				event.preventDefault();
+
+
 				const form = event.currentTarget;
 				const url = form.action;
-			
+
 				try {
 
 					const formData = new FormData(form);
+					image_url = "/static/content\\" + await postImage(form.querySelector('input[type="file"]').files[0])
 					if (formData.get("enigmatype") == "radiobutton") {
 						formData.set("answer", formData.get("answer") + "|" + formData.get("otheroption1") + "|" + formData.get("otheroption2"))
 					}
-					formData.delete("otheroption1")
-					formData.delete("otheroption2")
-					formData.append("id", form.dataset.cardid)
-					formData.append("image", "test")
+					formData.delete("otheroption1");
+					formData.delete("otheroption2");
+					formData.append("id", form.dataset.cardid);
+					formData.append("image", image_url)
 					const responseData = await postFormDataAsJson({ url, formData });
 
 					console.log({ responseData });
@@ -134,6 +146,36 @@
 				} catch (error) {
 					console.error(error);
 				}
+			}
+
+			async function postImage(image) {
+				const url = "/cards/image/";
+				const formData = new FormData();
+				formData.append("file",image)
+				try {
+					const responseData = await postFormDataAsFile({ url, formData });
+					console.log({ responseData });
+					return responseData["saved_image"]
+				} catch (error) {
+					console.error(error)
+				}
+			}
+
+			async function postFormDataAsFile({ url, formData }) {
+				
+				const fetchOptions = {
+					method: "POST",
+					body: formData,
+				};
+			
+				const response = await fetch(url, fetchOptions);
+			
+				if (!response.ok) {
+					const errorMessage = await response.text();
+					throw new Error(errorMessage);
+				}
+			
+				return response.json();
 			}
 
 			async function postFormDataAsJson({ url, formData }) {
