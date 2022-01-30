@@ -1,48 +1,51 @@
 {% extends 'cards/index.html' %}
 
-{% block content %}
-<div style="display: flex; flex-direction:column; align-items:center">
-  <img style="padding: 8px;min-width:200px" src="{{card_data["image"]}}" alt="">
-  {% if card_data["enigmatype"] == "question" %}
-    <p style="align-self:baseline; margin-bottom: 4px">{{card_data["question"].capitalize()}}</p>
-    <form style="width:100%" id="answerform" action="">
-      <input type="text" name="questionanswer" id="" autocomplete="off">
-      <input type="submit" class="submitanswerbutton" value="Invia risposta">
-    </form>
-  {% elif condition2 %}
+{% if session.get('_caccia_user_id', None)%}
+
+  {% block content %}
+  <div style="display: flex; flex-direction:column; align-items:center">
+    <img style="padding: 8px;min-width:200px" src="{{card_data["image"]}}" alt="">
+    {% if card_data["enigmatype"] == "question" %}
+      <p style="align-self:baseline; margin-bottom: 4px">{{card_data["question"].capitalize()}}</p>
+      <form style="width:100%" id="answerform" action="">
+        <input type="text" name="questionanswer" id="" autocomplete="off">
+        <input type="submit" class="submitanswerbutton" value="Invia risposta">
+      </form>
+    {% elif condition2 %}
+      
+    {% else %}
+      
+    {% endif %}
     
-  {% else %}
+  </div>
+  <!-- <h2>CARD: {{card_data['id']}}</h2>
+  <ul>
+    {% for key, value in card_data.items() %}
+      <li><strong>{{key}}:</strong> {{value}}</li>
+    {% endfor %}
+  </ul>
+
+  <a href="{{prev_card}}"> [ <-Prev ]</a>
+  <a href="{{next_card}}"> [ Next-> ]</a>
+   -->
+
+   <script>
+    document.addEventListener("DOMContentLoaded", function(event) { 
+      let answerform = document.getElementById("answerform")
+      answerform.addEventListener("submit", handleAnswerSubmit);
+    });
+
+    function handleAnswerSubmit() {
+      event.preventDefault()
+      try {
+
+        const formData = new FormData(answerform);
+        console.log(formData.get("questionanswer").toLowerCase() == "{{card_data["answer"]}}".toLowerCase())
     
-  {% endif %}
-  
-</div>
-<!-- <h2>CARD: {{card_data['id']}}</h2>
-<ul>
-  {% for key, value in card_data.items() %}
-    <li><strong>{{key}}:</strong> {{value}}</li>
-  {% endfor %}
-</ul>
-
-<a href="{{prev_card}}"> [ <-Prev ]</a>
-<a href="{{next_card}}"> [ Next-> ]</a>
- -->
-
- <script>
-  document.addEventListener("DOMContentLoaded", function(event) { 
-    let answerform = document.getElementById("answerform")
-    answerform.addEventListener("submit", handleAnswerSubmit);
-  });
-
-  function handleAnswerSubmit() {
-    event.preventDefault()
-    try {
-
-      const formData = new FormData(answerform);
-      console.log(formData.get("questionanswer").toLowerCase() == "{{card_data["answer"]}}".toLowerCase())
-  
-    } catch (error) {
-      console.error(error);
+      } catch (error) {
+        console.error(error);
+      }
     }
-  }
-</script>
-{% endblock %}
+  </script>
+  {% endblock %}
+{% endif %}

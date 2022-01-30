@@ -7,7 +7,7 @@ from flask.cli import with_appcontext
 from werkzeug.exceptions import NotFound
 
 import firebase_admin
-# from . import utils as u
+from . import utils as u
 
 import click
 
@@ -62,6 +62,9 @@ def create_app(test_config=None):
     from . import cards
     app.register_blueprint(cards.bp)
     app.register_blueprint(cards.api.bp)
+
+    from . import user
+    app.register_blueprint(user.bp)
 
     # app.add_url_rule('/base', endpoint='gamebase')
 

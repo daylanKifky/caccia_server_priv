@@ -1,0 +1,21 @@
+{% extends 'cards/index.html' %}
+
+{% block content %}
+
+<div style="display: flex; flex-direction:column; align-items: center;">
+    <p id="introp" style="text-align: center;">Benvenuto nella caccia al tesoro!<br>Per iniziare metti nome eh</p>
+
+    <form class="submitcard" enctype="application/x-www-form-urlencoded" action="/user/" method="post">
+        <p class="carddetailsp">Username: <input name="username" class="cardsinput"  style="margin-bottom: 0px;" type="text" value="Pippo"></p>
+    
+        <div style="margin-top: 14px;"><input type="submit" value="Init" class="cardbutton"></div>
+
+    </form>
+
+    <button style="width:100%" id="startbutton" class="submitanswerbutton">Start</button>
+
+</div>
+
+<!-- <a href="{{first_card}}"> [ Start ]</a> -->
+{% endblock %}
+

@@ -31,9 +31,13 @@ def end():
 @bp.route('/', methods=('GET',)) 
 def index():
 	card_id = request.args.get('card_id')
-	
+
+	c_uid = session.get('_caccia_user_id', None)
+	if not c_uid:
+		return render_template('cards/init.html', first_card=request.path+"?card_id=0")		
+
 	if not card_id:
-			return render_template('cards/home.html', first_card=request.path+"?card_id=0")		
+		return render_template('cards/home.html', first_card=request.path+"?card_id=0")		
 
 	try:
 		card_id = int(card_id)
