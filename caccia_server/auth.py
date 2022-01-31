@@ -121,7 +121,7 @@ def auth_check_dashboard(redirect_to_login = False):
         @wraps(f)
         def wrapper(*args, **kwargs):
             g.user = None
-            if request.method == 'POST' and not session:
+            if request.method == 'POST' and not (session and session.get('user_uid', False)):
                 token = None
                 if 'x-access-tokens' in request.headers:
                     token = request.headers['x-access-tokens']
@@ -162,7 +162,7 @@ def auth_check_dashboard(redirect_to_login = False):
                 session['user_email'] = g.user.email
                 session['user_uid'] = g.user.uid
 
-            elif request.method == 'GET' or session:
+            elif request.method == 'GET' or (session and session.get('user_uid', False)):
                 email = session.get('user_email', False)
                 uid = session.get('user_uid', False)
 

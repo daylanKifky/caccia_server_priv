@@ -27,8 +27,6 @@ body {
 	/*! border-radius: 10px; */
 	box-shadow: 0px 2px 0px 2px #0000001c;
 	padding: 20px;
-	animation-name: cardin;
-	animation-duration: 1s;
 }
 
 h1 {
@@ -149,7 +147,7 @@ nav ul li a, nav ul li span, header .action {
 }
 
 .content label {
-	margin-bottom: 0.5em;
+	margin-bottom: 0.4em;
 }
 
 .content input, .content textarea {
@@ -169,6 +167,7 @@ input[type=submit] {
 	/*! align-self: start; */
 	min-width: 10em;
 	margin: 0;
+	margin-top: 8px;
 }
 
 .hidden {
@@ -270,8 +269,9 @@ table tr.table_head th {
 #navigation {
 	/*! box-shadow: 0px 1px 6px #00000069 inset; */
 	/*! padding: 0px 0px 0px 12px; */
-	margin: 10px 10px 0px;
+	margin: 10px 0px 0px;
 	/*! border-radius: 9px; */
+	justify-content: start;
 }
 
 #navigation a {
@@ -339,11 +339,11 @@ details[open] {
 }
 
 .scanqrbutton {
-	background: #b60121;
+	background: #3a3737f5;
 	border-width: 0px;
 	color: white;
 	padding: 8px;
-	box-shadow: 0px 2px 0px 1px #bb7777a3;
+	box-shadow: 0px 2px 0px 1px #3a3737b3;
 	font-weight: bold;
 	width: 60px;
 	height: 60px;
@@ -352,12 +352,36 @@ details[open] {
 }
 
 .submitanswerbutton {
-	background: #117ba6cf;
+	background: #3d93b6;
 	border-width: 0px;
 	color: white;
 	padding: 8px;
 	box-shadow: 0px 2px 2px 1px #00000021;
 	font-weight: bold;
+}
+
+.radio-button {
+	display: flex;
+}
+
+.radio-button input[type="radio"] {
+	display: none;
+}
+
+.radio-button label {
+	display: inline-block;
+	background-color: #d1d1d1;
+	padding: 3px 8px;
+	/*! font-family: Arial; */
+	flex: 1;
+	box-shadow: 0px 2px 0px #2d2a2a4f;
+}
+
+.radio-button input[type="radio"]:checked+label {
+	background-color: #ffe28c;
+	color: black;
+	font-weight: normal;
+	box-shadow: 0px 1px 0px #f0b104;
 }
 
 /* ========= CHARTS ==========*/

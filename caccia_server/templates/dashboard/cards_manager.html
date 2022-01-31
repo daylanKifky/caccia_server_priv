@@ -22,16 +22,41 @@
 				<details>
 					<summary>Card {{item['id']}}</summary>
 					<div>
-						<form class="submitcard" action="/cards/" data-cardid={{item["id"]}}>
+						<form class="submitcard" action="/cards/" data-cardid={{item["id"]}} autocomplete="off" enctype="multipart/form-data">
 							<p class="carddetailsp">
 								Type:
-								<select style="margin-left: 4px" name="enigmatype" id="enigmatype">
-									<option value="question" {% if item["enigma_type"] == "question" %}selected{% endif %}>Question</option>
-									<option value="other" {% if item["enigma_type"] == "other" %}selected{% endif %}>Other</option>
+								<select style="margin-left: 4px" name="enigmatype" id="enigmatype" class="enigmatype" data-cardid={{item["id"]}}>
+									<option value="question" {% if item["enigmatype"] == "question" %}selected{% endif %}>Question</option>
+									<option value="radiobutton" {% if item["enigmatype"] == "radiobutton" %}selected{% endif %}>Multiple Choice</option>
+									<option value="physical" {% if item["enigmatype"] == "physical" %}selected{% endif %}>QR</option>
 								</select>
 							</p>
-							<p class="carddetailsp">Question: <input name="question" class="cardsinput"  style="margin-bottom: 0px;" type="text" value="{{item['question']}}"></p>
-							<p class="carddetailsp">Answer: <input name="answer" class="cardsinput" style="margin-bottom: 0px;" type="text" value="{{item['answer']}}"></p>
+							<p class="carddetailsp">Domanda: <input name="question" class="cardsinput"  style="margin-bottom: 0px;" type="text" value="{{item['question']}}"></p>
+							<p class="carddetailsp">
+								Risposta: 
+								<input name="answer" class="cardsinput" style="margin-bottom: 0px;" type="text" value="{{item['answer'].split('|')[0]}}">
+							</p>
+							<div data-cardid={{item["id"]}}>
+								<p class="carddetailsp" >
+									Altra Opzione 1: 
+									<input name="otheroption1" class="cardsinput" style="margin-bottom: 0px;" type="text" value="{{item['answer'].split('|')[1]}}">
+								</p>
+							</div>
+							<div data-cardid={{item["id"]}}>
+								<p class="carddetailsp" >
+									Altra Opzione 2: 
+									<input name="otheroption2" class="cardsinput" style="margin-bottom: 0px;" type="text" value="{{item['answer'].split('|')[2]}}">
+								</p>
+							</div>
+							<div>
+								<p class="carddetailsp" >
+									Image: 
+									<input style="margin-left:4px" type="file" name="file">
+								</p>
+							</div>
+							<img style="padding: 8px;min-width:100px; max-width:200px" id="questionimage" src="{{item["image"]}}" alt="">
+								
+
 							<div style="margin-top: 14px;"><input type="submit" value="Save" class="cardbutton"></div>
 							<p class="carddetailsp" style="font-size: small; font-style: oblique;">Last modified: {{item["modified"]}}</p>
 						</form>
@@ -42,24 +67,85 @@
 		    	
 	    {% endif %}
 		<script>
-			document.addEventListener("DOMContentLoaded", function(event) { 
+
+			document.addEventListener("DOMContentLoaded", function(event) {
+				// On enigmatype selection
+				let selectenigmatype = document.querySelectorAll(".enigmatype")
+				selectenigmatype.forEach((selectenigma) => {
+					selectenigma.addEventListener("change", changedSelectEnigma)
+					if (selectenigma.value == "question") {
+						document.querySelectorAll("div[data-cardid='" + selectenigma.dataset.cardid +"']").forEach((opt) => {
+							opt.hidden = true
+						})
+					} else if (selectenigma.value == "radiobutton") {
+						document.querySelectorAll("div[data-cardid='" + selectenigma.dataset.cardid +"']").forEach((opt) => {
+							opt.hidden = false
+						})
+					} else if (selectenigma.value == "physical") {
+						document.querySelectorAll("div[data-cardid='" + selectenigma.dataset.cardid +"']").forEach((opt) => {
+							opt.hidden = true
+						})
+					}
+				})
+				// On answer submit
 				let cardforms = document.querySelectorAll(".submitcard")
 				cardforms.forEach((form) => {
 					form.addEventListener("submit", handleFormSubmit);
 				})
 			});
+
+			function changedSelectEnigma(event) {
+				const selectenigma = event.currentTarget
+				if (selectenigma.value == "question") {
+					document.querySelectorAll("div[data-cardid='" + selectenigma.dataset.cardid +"']").forEach((opt) => {
+						opt.hidden = true
+						opt.querySelectorAll("input").forEach((option) => {
+							option.value = ""
+						})
+					})
+				} else if (selectenigma.value == "radiobutton") {
+					document.querySelectorAll("div[data-cardid='" + selectenigma.dataset.cardid +"']").forEach((opt) => {
+						opt.hidden = false
+						opt.querySelectorAll("input").forEach((option) => {
+							option.value = ""
+						})
+					})
+				} else if (selectenigma.value == "physical") {
+					document.querySelectorAll("div[data-cardid='" + selectenigma.dataset.cardid +"']").forEach((opt) => {
+						opt.hidden = true
+						opt.querySelectorAll("input").forEach((option) => {
+							option.value = ""
+						})
+					})
+				}
+			}
+
 			async function handleFormSubmit(event) {
 
-				event.preventDefault()
+				event.preventDefault();
+
+
 				const form = event.currentTarget;
 				const url = form.action;
-			
+
 				try {
 
 					const formData = new FormData(form);
-					formData.append("id", form.dataset.cardid)
-					formData.append("image", "test")
+					if (form.querySelector('input[type="file"]').files.length > 0) {
+						image_url = "/static/content\\" + await postImage(form.querySelector('input[type="file"]').files[0])
+					} else {
+						image_url = form.querySelector("img").src
+					} 
+					if (formData.get("enigmatype") == "radiobutton") {
+						formData.set("answer", formData.get("answer") + "|" + formData.get("otheroption1") + "|" + formData.get("otheroption2"))
+					}
+					formData.delete("otheroption1");
+					formData.delete("otheroption2");
+					formData.append("id", form.dataset.cardid);
+					formData.append("image", image_url)
 					const responseData = await postFormDataAsJson({ url, formData });
+
+					form.querySelector("img").src = image_url
 
 					console.log({ responseData });
 			
@@ -67,11 +153,42 @@
 					console.error(error);
 				}
 			}
+
+			async function postImage(image) {
+				const url = "/cards/image/";
+				const formData = new FormData();
+				formData.append("file",image)
+				try {
+					const responseData = await postFormDataAsFile({ url, formData });
+					console.log({ responseData });
+					return responseData["saved_image"]
+				} catch (error) {
+					console.error(error)
+				}
+			}
+
+			async function postFormDataAsFile({ url, formData }) {
+				
+				const fetchOptions = {
+					method: "POST",
+					body: formData,
+				};
+			
+				const response = await fetch(url, fetchOptions);
+			
+				if (!response.ok) {
+					const errorMessage = await response.text();
+					throw new Error(errorMessage);
+				}
+			
+				return response.json();
+			}
+
 			async function postFormDataAsJson({ url, formData }) {
 
 				const plainFormData = Object.fromEntries(formData.entries());
 				const formDataJsonString = JSON.stringify(plainFormData);
-			
+				console.log(formDataJsonString)
 				const fetchOptions = {
 					method: "POST",
 					headers: {
@@ -87,7 +204,7 @@
 					const errorMessage = await response.text();
 					throw new Error(errorMessage);
 				}
-			
+				
 				return response.json();
 			}
 		</script>

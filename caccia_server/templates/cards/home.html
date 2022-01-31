@@ -36,7 +36,7 @@
     <div style="margin-top:16px" id="spinner-area"></div>
     <div style="margin-top:12px; margin-bottom:8px" id="qr-reader" style="width:90%"></div>
     <button style="width:100%" id="startbutton" class="submitanswerbutton">Start</button>
-    <button id="scanbutton" class="scanqrbutton">Scan</button>
+    <button id="scanbutton" class="scanqrbutton">No QR</button>
 
 </div>
 
@@ -79,11 +79,13 @@
                         (decodedText, decodedResult) => {
                             scanbutton.style.backgroundColor = "#01b615"
                             lastQRDecoded = decodedText
+                            scanbutton.innerText = "Scan!"
+
                         },
                         (errorMessage) => {
                             lastQRDecoded = null
-                            scanbutton.style.backgroundColor = "#b60121"
-
+                            scanbutton.style.backgroundColor = "#3a3737f5"
+                            scanbutton.innerText = "No QR"
                         })
                         .then(
                             // Start succeeded 
