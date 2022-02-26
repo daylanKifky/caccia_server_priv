@@ -15,6 +15,7 @@ from .. import utils as u
 
 bp = Blueprint('api_cards', __name__, url_prefix='/cards')
 
+
 def cards_get_dict(card_id = None):
     response = []
     

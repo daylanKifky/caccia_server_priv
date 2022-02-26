@@ -7,19 +7,20 @@ CREATE TABLE cards(
     image TEXT NOT NULL,
     enigmatype VARCHAR(30), -- question, radiobutton, physical
     question TEXT NOT NULL,
-    answer TEXT NOT NULL
+    answer TEXT NOT NULL,
+    map_image TEXT NOT NULL
 );
 
-INSERT INTO `cards` VALUES (0, CURRENT_TIMESTAMP, "https://via.placeholder.com/150", 'question', "question with single answer?",  'yes' );
-INSERT INTO `cards` VALUES (1, CURRENT_TIMESTAMP, "https://via.placeholder.com/150", 'radiobutton', "question with multiple answer?",  'yes' );
-INSERT INTO `cards` VALUES (2, CURRENT_TIMESTAMP, "https://via.placeholder.com/150", 'physical', "question with QR code to scan?",  'yes' );
-INSERT INTO `cards` VALUES (3, CURRENT_TIMESTAMP, "https://via.placeholder.com/150", 'question', "do you like puppies?",  'yes' );
-INSERT INTO `cards` VALUES (4, CURRENT_TIMESTAMP, "https://via.placeholder.com/150", 'question', "do you like puppies?",  'yes' );
-INSERT INTO `cards` VALUES (5, CURRENT_TIMESTAMP, "https://via.placeholder.com/150", 'question', "do you like puppies?",  'yes' );
-INSERT INTO `cards` VALUES (6, CURRENT_TIMESTAMP, "https://via.placeholder.com/150", 'question', "do you like puppies?",  'yes' );
-INSERT INTO `cards` VALUES (7, CURRENT_TIMESTAMP, "https://via.placeholder.com/150", 'question', "do you like puppies?",  'yes' );
-INSERT INTO `cards` VALUES (8, CURRENT_TIMESTAMP, "https://via.placeholder.com/150", 'question', "do you like puppies?",  'yes' );
-INSERT INTO `cards` VALUES (9, CURRENT_TIMESTAMP, "https://via.placeholder.com/150", 'question', "do you like puppies?",  'yes' );
+INSERT INTO `cards` VALUES (0, CURRENT_TIMESTAMP, "https://via.placeholder.com/150", 'question', "do you like puppies?",  'yes', "https://via.placeholder.com/600x320" );
+INSERT INTO `cards` VALUES (1, CURRENT_TIMESTAMP, "https://via.placeholder.com/150", 'question', "do you like puppies?",  'yes', "https://via.placeholder.com/600x320" );
+INSERT INTO `cards` VALUES (2, CURRENT_TIMESTAMP, "https://via.placeholder.com/150", 'physical', "do you like puppies?",  'yes', "https://via.placeholder.com/600x320"  );
+INSERT INTO `cards` VALUES (3, CURRENT_TIMESTAMP, "https://via.placeholder.com/150", 'question', "do you like puppies?",  'yes', "https://via.placeholder.com/600x320" );
+INSERT INTO `cards` VALUES (4, CURRENT_TIMESTAMP, "https://via.placeholder.com/150", 'question', "do you like puppies?",  'yes', "https://via.placeholder.com/600x320" );
+INSERT INTO `cards` VALUES (5, CURRENT_TIMESTAMP, "https://via.placeholder.com/150", 'question', "do you like puppies?",  'yes', "https://via.placeholder.com/600x320" );
+INSERT INTO `cards` VALUES (6, CURRENT_TIMESTAMP, "https://via.placeholder.com/150", 'question', "do you like puppies?",  'yes', "https://via.placeholder.com/600x320" );
+INSERT INTO `cards` VALUES (7, CURRENT_TIMESTAMP, "https://via.placeholder.com/150", 'question', "do you like puppies?",  'yes', "https://via.placeholder.com/600x320" );
+INSERT INTO `cards` VALUES (8, CURRENT_TIMESTAMP, "https://via.placeholder.com/150", 'question', "do you like puppies?",  'yes', "https://via.placeholder.com/600x320" );
+INSERT INTO `cards` VALUES (9, CURRENT_TIMESTAMP, "https://via.placeholder.com/150", 'question', "do you like puppies?",  'yes', "https://via.placeholder.com/600x320" );
 
 
 DROP TABLE IF EXISTS users;
@@ -27,8 +28,9 @@ CREATE TABLE users(
     id INTEGER PRIMARY KEY,
     username TEXT NOT NULL,
     created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    lastseen TIMESTAMP,
+    lastseen TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     firstanswer TIMESTAMP,
+    playtime INTEGER DEFAULT 0,
     enigma0 INTEGER DEFAULT 0,
     enigma1 INTEGER DEFAULT 0,
     enigma2 INTEGER DEFAULT 0,

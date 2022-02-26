@@ -60,5 +60,21 @@ def logout_user():
 	flash("logout sucessful")
 	return render_template('cards/init.html')
 
+def user_get_dict(uid):
+	user_dict = {}
+	try:
+		db = get_db()
+		
+		res = db.execute("SELECT * FROM users WHERE id = ?", (uid,))
+		if not res: return {}
+		
+		row = res.fetchone()
+		user_dict = {k:row[k] for k in row.keys()}
+
+	except Exception as e:
+		pass
+
+	return user_dict
+
 
 
