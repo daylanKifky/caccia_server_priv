@@ -3,13 +3,58 @@
 {% if session.get('_caccia_user_id', None)%}
 {% block content %}
 
+<script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+<script src="{{ url_for('static', filename='spin.min.js') }}"></script>
+<script>
+    let spinner_opts = {
+        lines: 13,
+        length: 28,
+        width: 14,
+        radius: 42,
+        scale: 0.3,
+        corners: 1,
+        color: '#000',
+        opacity: 0.25,
+        rotate: 0,
+        direction: 1,
+        speed: 1,
+        trail: 60,
+        fps: 20,
+        zIndex: 2e9,
+        className: 'spinner',
+        top: '50%',
+        left: '50%',
+        shadow: false,
+        hwaccel: false,
+        position: 'absolute',
+    };
+    let spinner = new Spinner(spinner_opts);
+</script>
 
+
+<!-- Overrides style.css body to change nav button color -->
+<style>
+  
+</style>
 <!-- BADGE content -->
 <p><strong>NEW_BADGE:</strong> {{new_badge}}</p>
 <p><strong>USER_BADGES:</strong> {{user_badges}}</p>
 <p><strong>BACK_TO_CARD:</strong> {{back_to_card}}</p>
 <p><strong>MAP_IMAGE:</strong> {{map_image}}</p>
 
+<div style="display: flex; justify-content: center;">
+  <div class="badges-grid" style=" flex:1">
+    {% for i in range(0, 10)  %}
+      {% if (i-1) in next_card %}
+        <div style="aspect-ratio: 1 / 1;">
+          <img src="static/rewards/r{{i+1}}.png" style="width:100%">
+        </div>
+      {% else %}
+        <div style="aspect-ratio: 1 / 1;">?</div>
+      {% endif %}
+    {% endfor %}
+  </div>
+</div>
 
 
 {% endblock %}
