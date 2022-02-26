@@ -4,7 +4,9 @@
   <div id="temp user block" style="display: flex;align-items: center;">
     {% if session.get('_caccia_user_id', None)%}
     <p style="flex:1; color: #3d93b6; font-weight: bold">{{session.get('_caccia_user_name', None)}} {# (id {{session.get('_caccia_user_id', None)}}) #}</p>
-    <a class="logoutbutton" href="/user/logout">Esci</a>
+    <a class="usermenubutton" href="/">Home</a>
+    <a class="usermenubutton" href="/badges?card_id=0">Badges</a>
+    <a class="usermenubutton" href="/user/logout">Esci</a>
     {% endif %}
   </div>
   

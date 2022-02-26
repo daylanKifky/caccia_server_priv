@@ -360,12 +360,12 @@ details[open] {
 	font-weight: bold;
 }
 
-.logoutbutton {
+.usermenubutton {
 	background: #3d93b6;
 	border-width: 0px;
 	color: white;
 	padding: 8px;
-	box-shadow: 0px 2px 2px 1px #00000021;
+	box-shadow: 0px 1px 2px 0px #00000021;
 	font-weight: normal;
 	font-size: small;
 }
