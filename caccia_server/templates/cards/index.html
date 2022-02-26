@@ -1,9 +1,13 @@
 {% extends 'cards/base.html' %}
 
 {% block navigation %}
-  <div id="temp user block"><p>User: {{session.get('_caccia_user_name', None)}} (id {{session.get('_caccia_user_id', None)}})</p></div>
+  <div id="temp user block" style="display: flex;align-items: center;">
+    {% if session.get('_caccia_user_id', None)%}
+    <p style="flex:1; color: #3d93b6; font-weight: bold">{{session.get('_caccia_user_name', None)}} {# (id {{session.get('_caccia_user_id', None)}}) #}</p>
+    <a class="logoutbutton" href="/user/logout">Esci</a>
+    {% endif %}
+  </div>
   
-  <a href="/user/logout">[Logout]</a>
 <!-- <nav id="navigation">
   <a href="{{ url_for( 'cards_manager.index') }}">Cards</a>
   <a href="{{ url_for( 'users_analytics.index') }}">Users</a>
