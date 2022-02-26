@@ -71,3 +71,27 @@ def index():
 							next_card=next_card,
 							prev_card=prev_card)
 
+
+@bp.route('/badges', methods=('GET',)) 
+def badges():
+	card_id = request.args.get('card_id')
+
+	c_uid = session.get('_caccia_user_id', None)
+	if not c_uid:
+		return render_template('cards/init.html', first_card=request.path+"?card_id=0")		
+
+	if not card_id:
+		return render_template('cards/home.html', first_card=request.path+"?card_id=0")		
+
+	try:
+		card_id = int(card_id)
+	except Exception as e:
+		flash("card_id should be an integer")
+		return render_template('cards/home.html')
+
+	#todo get real user data from DB
+	
+	return render_template('cards/badge.html', 
+							new_badge= 3 , 
+							next_card= [1, 3, 5, 6])
+
