@@ -8,7 +8,7 @@ CREATE TABLE cards(
     enigmatype VARCHAR(30), -- question, radiobutton, physical
     question TEXT NOT NULL,
     answer TEXT NOT NULL,
-    map_image TEXT NOT NULL
+    mapimage TEXT NOT NULL
 );
 
 INSERT INTO `cards` VALUES (0, CURRENT_TIMESTAMP, "https://via.placeholder.com/150", 'question', "do you like puppies?",  'yes', "/static/map_not_found.jpg" );

@@ -149,7 +149,7 @@ def badges():
 	if card_id is not None:
 		try:
 			card_data = api.cards_get_dict(card_id)
-			map_image = card_data[0]["map_image"]
+			map_image = card_data[0]["mapimage"]
 		except Exception as e:
 			err_id = u.get_error_id()
 			current_app.logger.error('[ Get cards list error (api /badges) | error_id: %s ] %s\n%s---' % (err_id, e, traceback.format_exc()) )

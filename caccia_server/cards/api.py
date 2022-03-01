@@ -69,9 +69,10 @@ def populate_msg():
                       enigmatype = ? ,
                       question = ?,
                       answer = ?,
+                      mapimage = ?,
                       modified = CURRENT_TIMESTAMP
                     WHERE id = ?;''', (content['image'], content['enigmatype'], 
-                    content['question'], content['answer'], content['id']))
+                    content['question'], content['answer'], content['mapimage'], content['id']))
         
         db.commit()
 
