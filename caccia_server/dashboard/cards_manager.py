@@ -24,6 +24,14 @@ bp = Blueprint('cards_manager', __name__, url_prefix='/dashboard/cards')
 @bp.route('/', methods=('GET',)) 
 @auth_check_dashboard(redirect_to_login=True)
 def index(user):
-	data = cards_get_dict()
-	# data = { "some_var" : "pippo", "foo": "pappa" }
+	try:
+		data = cards_get_dict()
+	except Exception as e:
+		err_id = u.get_error_id()
+
+		current_app.logger.error('[ Get cards list error (cards_manager)| error_id: %s ] %s\n%s---' % (err_id, e, traceback.format_exc()) )
+
+		int_error = jsonify({"status": "error", "reason": "internal error", "error_id": err_id})
+		return make_response( int_error, 500 )
+ 
 	return render_template('dashboard/cards_manager.html', data=data)

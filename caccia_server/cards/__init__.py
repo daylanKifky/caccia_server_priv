@@ -9,7 +9,7 @@ from flask import (
 	make_response, jsonify, session, flash
 )
 from werkzeug.exceptions import abort
-# from functools import wraps
+from os.path import join
 
 from ..db import get_db, sqlite3
 # from ..auth import auth_check_dashboard, User
@@ -32,20 +32,23 @@ def end():
 @bp.route('/', methods=('GET',)) 
 def index():
 	card_id = request.args.get('card_id')
-
 	c_uid = session.get('_caccia_user_id', None)
+
+	# render templates in case the request is not valid
 	if not c_uid:
 		return render_template('cards/init.html', first_card=request.path+"?card_id=0")		
 
 	if not card_id:
 		return render_template('cards/home.html', first_card=request.path+"?card_id=0")		
 
+	#convert card_id to int
 	try:
 		card_id = int(card_id)
 	except Exception as e:
 		flash("card_id should be an integer")
 		return render_template('cards/home.html')		
 
+	# calculate next and prev card
 	next_card = card_id + 1
 	prev_card = card_id - 1 
 
@@ -59,14 +62,23 @@ def index():
 	else:
 		prev_card = request.path + "?card_id={}".format(prev_card)
 	
-	card_data = api.cards_get_dict(card_id)
-
+	#get card_data
+	card_data = None
+	try:
+		card_data = api.cards_get_dict(card_id)
+	except Exception as e:
+		err_id = u.get_error_id()
+		current_app.logger.error('[ Get cards list error (api /cards)| error_id: %s ] %s\n%s---' % (err_id, e, traceback.format_exc()) )
+		int_error = jsonify({"status": "error", "reason": "internal error", "error_id": err_id})
+		return make_response( int_error, 500 )
+	
 	if card_data:
 		card_data = card_data[0]
 	else:
 		flash("the requested card_id is not valid: {}".format(card_id))
 		return render_template('cards/home.html', first_card=request.path+"?card_id=0")
 
+	# format /badges url for this card 
 	badge_page = request.path + "/badges?card_id={}".format(card_id) 
 
 	return render_template('cards/single_card.html', 
@@ -75,17 +87,18 @@ def index():
 							next_card=next_card,
 							prev_card=prev_card)
 
+
 enigma_keys = ["enigma{}".format(i) for i in range(10)]
 
 @bp.route('/badges', methods=('GET', 'POST')) 
 def badges():
-	card_id = request.args.get('card_id')
+	card_id = request.args.get('card_id', None)
 
 	c_uid = session.get('_caccia_user_id', None)
 	if not c_uid:
-		return render_template('cards/init.html', first_card=request.path+"?card_id=0")		
+		return render_template('cards/init.html', first_card=request.host_url+"?card_id=0")		
 
-	if card_id:
+	if card_id is not None:
 		try:
 			card_id = int(card_id)
 		except Exception as e:
@@ -94,7 +107,7 @@ def badges():
 
 	new_badge = -1
 	if request.method == 'POST':
-		if not card_id:
+		if not card_id is not None:
 			flash("A card_id is required to POST a new badge")
 			return render_template('cards/home.html')
 
@@ -123,17 +136,27 @@ def badges():
 
 	user_data = user.user_get_dict(c_uid)
 	if not user_data:
-		return render_template('cards/init.html', first_card=request.path+"?card_id=0")
+		return render_template('cards/init.html', first_card=request.host_url+"?card_id=0")
 
 	user_badges = [user_data["enigma0"], user_data["enigma1"], user_data["enigma2"],
 					user_data["enigma3"], user_data["enigma4"], user_data["enigma5"],
 					user_data["enigma6"], user_data["enigma7"], user_data["enigma8"],
 					user_data["enigma9"]]
 	
-	if card_id:
-		card_data = api.cards_get_dict(card_id)
-		map_image = card_data[0]["map_image"]
-		back_to_card = request.path+"?card_id={}".format(card_id)
+	map_image = "map_not_found.jpg"
+	map_image =  url_for('static', filename=map_image)
+ 
+	if card_id is not None:
+		try:
+			card_data = api.cards_get_dict(card_id)
+			map_image = card_data[0]["mapimage"]
+		except Exception as e:
+			err_id = u.get_error_id()
+			current_app.logger.error('[ Get cards list error (api /badges) | error_id: %s ] %s\n%s---' % (err_id, e, traceback.format_exc()) )
+			int_error = jsonify({"status": "error", "reason": "internal error", "error_id": err_id})
+			return make_response( int_error, 500 )
+	
+		back_to_card = request.host_url+"?card_id={}".format(card_id)
 	else:
 		map_image = None
 		back_to_card = None

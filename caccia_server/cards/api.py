@@ -19,22 +19,18 @@ bp = Blueprint('api_cards', __name__, url_prefix='/cards')
 def cards_get_dict(card_id = None):
     response = []
     
-    try:
-        db = get_db()
-        
-        if card_id is None:
-            res = db.execute("SELECT * FROM cards")
-            res = res.fetchall()
-        
-        else:
-            res = db.execute("SELECT * FROM cards WHERE id = ?", (card_id,))
-            res = res.fetchall()
+    db = get_db()
+    
+    if card_id is None:
+        res = db.execute("SELECT * FROM cards")
+        res = res.fetchall()
+    
+    else:
+        res = db.execute("SELECT * FROM cards WHERE id = ?", (card_id,))
+        res = res.fetchall()
 
-        for row in res:
-            response.append({k:row[k] for k in row.keys()})
-        
-    except Exception as e:
-        pass
+    for row in res:
+        response.append({k:row[k] for k in row.keys()})
 
     return response
 
@@ -73,9 +69,10 @@ def populate_msg():
                       enigmatype = ? ,
                       question = ?,
                       answer = ?,
+                      mapimage = ?,
                       modified = CURRENT_TIMESTAMP
                     WHERE id = ?;''', (content['image'], content['enigmatype'], 
-                    content['question'], content['answer'], content['id']))
+                    content['question'], content['answer'], content['mapimage'], content['id']))
         
         db.commit()
 
