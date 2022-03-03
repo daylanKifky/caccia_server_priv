@@ -33,8 +33,11 @@ def create_user_in_db(username):
 	return uid
 
 
-@bp.route('/', methods=('POST',)) 
+@bp.route('/', methods=('POST', 'GET')) 
 def create_user():
+	if request.method == 'GET':
+		return render_template('cards/home.html', first_card=request.url_root+"?card_id=0")
+
 	username = request.form['username']
 
 	try:
@@ -51,7 +54,7 @@ def create_user():
 	session['_caccia_user_id'] = uid
 	session['_caccia_user_name'] = username
 
-	return render_template('cards/home.html', first_card=request.url_root+"?card_id=0")
+	return redirect(url_for("user.create_user"))
 
 @bp.route('/logout', methods=('GET',)) 
 def logout_user():
