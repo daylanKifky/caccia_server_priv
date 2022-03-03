@@ -14,7 +14,7 @@ LORENZO TODO:
 
 BRUNO TODO:
 
-[ ] double login problem or something
+[X] double login problem or something
 
 [X] catch server errors
 
