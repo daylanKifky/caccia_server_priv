@@ -18,29 +18,45 @@
 	    {% else %}
 	    	<script>
 	    		document.addEventListener("DOMContentLoaded", function(event) { 
-					const stats_data = JSON.parse({{data|tojson}}); // Make jinja print data as JSON
+					const stats_data = JSON.parse('{{users|tojson}}'); // Make jinja print data as 
+JSON
+					// Here's the user's table data as JS object
+					console.log(stats_data);
 				});
 
 	    	</script>
 	    	<section>
 		    	<h2>Users</h2>
-	    		
-	    		<p>Rendering some template params as an example:</p>
 
-	    		<p><strong>users_n:</strong> {{users_n}}</p>
-	    		<p><strong>medium_iq:</strong> {{medium_iq}}</p>
+	    		<!-- Render users table -->
+				<!-- jinja var users is a list of dicts  -->
+	    		 <table>
+	    		  <tr> <!-- first table row, print the keys of the first dict of the 'users' list -->
+	    		  	{% for col in users[0].keys() %}
+	    		    <th>{{col}}</th>
+	    		    {% endfor %}
+	    		  </tr>
+		    		{% for user in users %}
 
+	    		  <tr> <!-- other rows, print the values of every dict of the 'users' list -->
+    				{% for val in user.values() %}
+	    		  	<th>{{val}}</th>
+    		  	  	{% endfor %}  	
+	    		  </tr>
+
+	    		{% endfor%}
+	    		</table> 
 	    	</section>
 		    	
 	    {% endif %}
-
+<!-- 
 	    <h3>--------- UPLOAD FORM FOR TEST----------</h3>
 
 	    <form method="post" action="/cards/image/" enctype="multipart/form-data">
 			<label for="file">Select image to upload:</label>
 			<input type="file" name="file">
 			<input type="submit" value="Upload">
-	    </form>
+	    </form> -->
 
 
     {% endblock %}

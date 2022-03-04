@@ -23,5 +23,35 @@ bp = Blueprint('users_analytics', __name__, url_prefix='/dashboard/users')
 @bp.route('/', methods=('GET',)) 
 @auth_check_dashboard(redirect_to_login=True)
 def index(user):
-	data = { "users_n" : 345, "medium_iq": 6.5 }
-	return render_template('dashboard/users_analytics.html', data=json.dumps(data), **data)
+	try:
+		db = get_db()
+		
+		res = db.execute("SELECT * FROM users")
+		res = res.fetchall()
+
+		response = []
+		for row in res:
+
+			response.append({k.replace('enigma', 'e'):row[k] for k in row.keys()})
+		
+	except Exception as e:
+		err_id = u.get_error_id()
+
+		current_app.logger.error('[ Get users list error | error_id: %s ] %s\n%s---' % (err_id, e, traceback.format_exc()) )
+
+		int_error = jsonify({"status": "error", "reason": "internal error", "error_id": err_id})
+		return make_response( int_error, 500 )
+
+	
+
+
+	# get all users
+
+	## -- Then filter by:
+		# -page (pagination)
+		# -username
+		# -data?
+
+	#pass them to template
+	
+	return render_template('dashboard/users_analytics.html', users=response)
