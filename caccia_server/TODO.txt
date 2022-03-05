@@ -7,10 +7,15 @@ LORENZO TODO:
 	-POST this other image to endpoint /cards/image
 	-POST the card data including the "image_url" value of the previous response with the key "mapimage"
 
-
 [ ] in JS login.html:101 handle 400 and 500 reponse status differently. (on 500 pass the error code on the msg)
 
+[ ] css in /dashboard/users/ to:
+	- render the table in a nicer way, perhaps showing the thumbs of the badge cell if the user has it
+	- format pagination and search form, to make it nicer and more compact. Perhaps pagination goes in the bottom  
+
 [ ] make everything beautyfull
+
+[ ] test it works with actual QR codes
 
 BRUNO TODO:
 
@@ -18,17 +23,19 @@ BRUNO TODO:
 
 [X] catch server errors
 
-[ ] user analytics
+[X] user analytics (en realidad un gestionale per visualizzare gli user del DB)
 
 [X] allow upload of map in /dashboard
 
 
 BR-ENZO TODO:
 
-[ ] enable the user chech in:
-	GET /cards  
+[ ] enable the user check in:
 	POST /cards  
 	POST /cards/image
 
 	(Bruno should enable `auth_check_dashboard`) 
-	(lorenzo include the cookie in the XHR request)
+	(lorenzo include the header x-access-tokens" in the XHR request)
+
+	for now the server prints the contents of this header to the console, 
+	@lor cosi puoi testare se lo stai mandando

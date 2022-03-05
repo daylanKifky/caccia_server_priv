@@ -59,7 +59,13 @@ def cards_get():
 @bp.route('/', methods=('POST',))
 # @auth_check_dashboard(redirect_to_login=True) 
 def populate_msg():
+    # print("***** POST /cards cookies", request.cookies)
+    print("***** POST /cards x-access-tokens", getattr(request, "x-access-tokens", "NOT FOUND"))
+
     content = request.get_json()
+    if not "mapimage" in content.keys():
+        map_image = "map_not_found.jpg"
+        content["mapimage"] =   url_for('static', filename=map_image)
 
     try:
         db = get_db()
@@ -91,6 +97,8 @@ def populate_msg():
 @bp.route('/image/', methods=('POST',)) 
 # @auth_check_dashboard(redirect_to_login=True)
 def image(user=None):
+    print("***** POST /cards/image x-access-tokens", getattr(request, "x-access-tokens", "NOT FOUND"))
+
     try:
         if 'file' not in request.files:
             return jsonify({"status": "image not saved, file not present in request"})
