@@ -9,7 +9,7 @@ LORENZO TODO:
 
 [ ] in JS login.html:101 handle 400 and 500 reponse status differently. (on 500 pass the error code on the msg)
 
-[ ] css in /dashboard/users/ to:
+[ ] css in /dashboard/users/ (template: user_analytics.html) to:
 	- render the table in a nicer way, perhaps showing the thumbs of the badge cell if the user has it
 	- format pagination and search form, to make it nicer and more compact. Perhaps pagination goes in the bottom  
 
