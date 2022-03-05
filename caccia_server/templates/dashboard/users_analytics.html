@@ -26,26 +26,56 @@ JSON
 
 	    	</script>
 	    	<section>
+	    		<h3>Pagination</h3>
+		    	<a href="{{first_page}}">[ |< ]</a>
+		    	{% if prev_page %}
+		    		<a href="{{prev_page}}">[ << ]</a>
+		    	{% else %}
+		    		<a href="#">[ __ ]</a>
+		    	{% endif%}
+		    	{% if next_page %}
+		    		<a href="{{next_page}}">[ >> ]</a>
+		    	{% else %}
+		    		<a href="#">[ __ ]</a>
+		    	{% endif%}
+		    	<a href="{{last_page}}">[ >| ]</a>
+		    	<span>page: {{this_page}}/{{total_pages}}</span>
+		    	
+		    	<h3>Name search</h3>
+		    	<form method="get" action="{{request.path}}" >
+					<label for="uname">Search by username</label>
+					<input name="uname" placeholder="{{request.args.get('uname', '')}}">
+					<input type="submit" value="Search">
+			    </form> 
+
+			    {% if request.args.get("uname", None) %}
+			    <a href="{{request.path}}">[ Clear search ]</a>
+			    {% endif %}
+		    	
 		    	<h2>Users</h2>
 
-	    		<!-- Render users table -->
-				<!-- jinja var users is a list of dicts  -->
-	    		 <table>
-	    		  <tr> <!-- first table row, print the keys of the first dict of the 'users' list -->
-	    		  	{% for col in users[0].keys() %}
-	    		    <th>{{col}}</th>
-	    		    {% endfor %}
-	    		  </tr>
-		    		{% for user in users %}
 
-	    		  <tr> <!-- other rows, print the values of every dict of the 'users' list -->
-    				{% for val in user.values() %}
-	    		  	<th>{{val}}</th>
-    		  	  	{% endfor %}  	
-	    		  </tr>
+			    {% if users %}
+		    		<!-- Render users table -->
+					<!-- jinja var users is a list of dicts  -->
+		    		 <table>
+		    		  <tr> <!-- first table row, print the keys of the first dict of the 'users' list -->
+		    		  	{% for col in users[0].keys() %}
+		    		    <th>{{col}}</th>
+		    		    {% endfor %}
+		    		  </tr>
+			    		{% for user in users %}
 
-	    		{% endfor%}
-	    		</table> 
+		    		  <tr> <!-- other rows, print the values of every dict of the 'users' list -->
+	    				{% for val in user.values() %}
+		    		  	<th>{{val}}</th>
+	    		  	  	{% endfor %}  	
+		    		  </tr>
+
+		    		{% endfor%}
+		    		</table>
+	    		{% endif%}
+
 	    	</section>
 		    	
 	    {% endif %}
