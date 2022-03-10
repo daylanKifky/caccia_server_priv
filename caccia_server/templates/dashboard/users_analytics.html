@@ -3,13 +3,65 @@
 {% if g.user %}
 
 	{% block navigation %}
+	<style>
+		#useranalytics {
+		font-family: Arial, Helvetica, sans-serif;
+		border-collapse: collapse;
+		width: 100%;
+		}
+
+		#analyticscontainer {
+			overflow-x: scroll;
+		}
+
+		#useranalytics td, #useranalytics th {
+			border: 1px solid #ddd;
+			padding: 8px;
+		  }
+		
+		#useranalytics td, #customers th {
+		border: 1px solid #ddd;
+		padding: 8px;
+		}
+		
+		#useranalytics tr:nth-child(even){background-color: #f2f2f2;}
+		
+		#useranalytics tr:hover {background-color: #ddd;}
+		
+		#useranalytics tr:nth-child(1) {
+			background-color: #377ba8;
+		}
+
+		#useranalytics tr:nth-child(1) th {
+			color: white;
+		}
+
+		#useranalytics th {
+		padding-top: 12px;
+		padding-bottom: 12px;
+		text-align: left;
+		color: black;
+		font-size: 12px;
+		}
+
+		section a {
+			text-decoration: none;
+			color: black;
+		}
+
+		section a:visited {
+			color: black;
+		}
+	</style>
 	<nav id="navigation">
 	  <a href="{{ url_for( 'cards_manager.index') }}">Cards</a>
 	  <a class="current" href="{{ url_for( 'users_analytics.index') }}">Users</a>
 	</nav>
+
 	{% endblock %}
 
     {% block content %}
+		
 	    {% if status == "error" %}
 	    		<h2>Error</h2>
 	    		<p><strong>Could not fetch data:</strong> {{reason}}</p>
@@ -26,54 +78,68 @@ JSON
 
 	    	</script>
 	    	<section>
-	    		<h3>Pagination</h3>
-		    	<a href="{{first_page}}">[ |< ]</a>
-		    	{% if prev_page %}
-		    		<a href="{{prev_page}}">[ << ]</a>
-		    	{% else %}
-		    		<a href="#">[ __ ]</a>
-		    	{% endif%}
-		    	{% if next_page %}
-		    		<a href="{{next_page}}">[ >> ]</a>
-		    	{% else %}
-		    		<a href="#">[ __ ]</a>
-		    	{% endif%}
-		    	<a href="{{last_page}}">[ >| ]</a>
-		    	<span>page: {{this_page}}/{{total_pages}}</span>
 		    	
-		    	<h3>Name search</h3>
+		    	
 		    	<form method="get" action="{{request.path}}" >
 					<label for="uname">Search by username</label>
-					<input name="uname" placeholder="{{request.args.get('uname', '')}}">
+					<input name="uname" value="{{request.args.get('uname', '')}}" style="margin-bottom: 0px;">
 					<input type="submit" value="Search">
 			    </form> 
 
 			    {% if request.args.get("uname", None) %}
-			    <a href="{{request.path}}">[ Clear search ]</a>
+			    <a class="usermenubutton" style="background-color: #377ba8; color: white" href="{{request.path}}">Clear search</a>
 			    {% endif %}
-		    	
-		    	<h2>Users</h2>
-
 
 			    {% if users %}
-		    		<!-- Render users table -->
+				<div style="display: flex; justify-content: space-between; margin-top: 12px"> 
+					<div>
+						<a href="{{first_page}}">&#11244;</a>
+						{% if prev_page %}
+							<a href="{{prev_page}}">&#9664;</a>
+						{% else %}
+							<a href="#">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+						{% endif %}
+						{% if next_page %}
+							<a href="{{next_page}}">&#9654;</a>
+						{% else %}
+							<a href="#">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+						{% endif%}
+						<a href="{{last_page}}">&#11246;</a>
+					</div>
+					<span>page: {{this_page}}/{{total_pages}}</span>
+
+				</div>
+				
+				
+
+				<div id="analyticscontainer" style="margin-top: 10px">
+					<!-- Render users table -->
 					<!-- jinja var users is a list of dicts  -->
-		    		 <table>
-		    		  <tr> <!-- first table row, print the keys of the first dict of the 'users' list -->
-		    		  	{% for col in users[0].keys() %}
-		    		    <th>{{col}}</th>
-		    		    {% endfor %}
-		    		  </tr>
-			    		{% for user in users %}
-
-		    		  <tr> <!-- other rows, print the values of every dict of the 'users' list -->
-	    				{% for val in user.values() %}
-		    		  	<th>{{val}}</th>
-	    		  	  	{% endfor %}  	
-		    		  </tr>
-
-		    		{% endfor%}
-		    		</table>
+					<table id="useranalytics">
+						<tr> <!-- first table row, print the keys of the first dict of the 'users' list -->
+							{% for col in users[0].keys() %}
+								<th>{{col}}</th>
+							{% endfor %}
+						</tr>
+						  {% for user in users %}
+  
+						<tr> <!-- other rows, print the values of every dict of the 'users' list -->
+						  	{% for val in user.values() %}
+								{% if loop.index > 6 %}
+									{% if val == 0 %}
+										<th style="text-align:center"><img style="width: 100%; max-width: 40px" src="/static/rewards/empty.png" alt=""></th>
+									{% else %}
+										<th style="text-align:center"><img style="width: 100%; max-width: 40px" src="/static/rewards/{{loop.index - 6}}.png" alt=""></th>
+									{%endif%}
+								{% else %}
+									<th>{{val}}</th>
+								{%endif%}
+							{% endfor %}  	
+						</tr>
+					  {% endfor%}
+					  </table>
+				</div>
+		    		
 	    		{% endif%}
 
 	    	</section>
@@ -90,5 +156,7 @@ JSON
 
 
     {% endblock %}
+	
 
 {% endif %}
+

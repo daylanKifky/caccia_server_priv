@@ -37,23 +37,27 @@
   
 </style>
 <!-- BADGE content -->
-<p><strong>NEW_BADGE:</strong> {{new_badge}}</p>
-<p><strong>USER_BADGES:</strong> {{user_badges}}</p>
-<p><strong>BACK_TO_CARD:</strong> {{back_to_card}}</p>
-<p><strong>MAP_IMAGE:</strong> {{map_image}}</p>
+<p style="display: none"><strong>NEW_BADGE:</strong> {{new_badge}}</p>
+<p style="display: none"><strong>USER_BADGES:</strong> {{user_badges}}</p>
+<p style="display: none"><strong>BACK_TO_CARD:</strong> {{back_to_card}}</p>
+<p style="display: none"><strong>MAP_IMAGE:</strong> {{map_image}}</p>
 
-<div style="display: flex; justify-content: center;">
+
+<div style="display: flex; justify-content: center; margin-bottom: 20px">
   <div class="badges-grid" style=" flex:1">
-    {% for i in range(0, 10)  %}
-      {% if (i-1) in next_card %}
+    {% for i in user_badges %}
+      {% if i == 1 %}
         <div style="aspect-ratio: 1 / 1;">
-          <img src="static/rewards/r{{i+1}}.png" style="width:100%">
+          <img src="static/rewards/{{loop.index}}.png" style="width:100%">
         </div>
       {% else %}
         <div style="aspect-ratio: 1 / 1;">?</div>
       {% endif %}
     {% endfor %}
   </div>
+</div>
+<div style="display: flex; justify-content: center">
+  <img style="width: 100%; max-width:400px" src="{{map_image}}" alt="">
 </div>
 
 

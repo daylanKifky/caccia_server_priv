@@ -1,15 +1,15 @@
 LORENZO TODO:
 
-[ ] use map_image in /badges
+[X] use map_image in /badges
 
-[ ] allow upload of map in /dashboard
-	-expose the required form imput in GUI
-	-POST this other image to endpoint /cards/image
-	-POST the card data including the "image_url" value of the previous response with the key "mapimage"
+[X] allow upload of map in /dashboard
+	X - expose the required form imput in GUI
+	X POST this other image to endpoint /cards/image
+	X POST the card data including the "image_url" value of the previous response with the key "mapimage"
 
 [ ] in JS login.html:101 handle 400 and 500 reponse status differently. (on 500 pass the error code on the msg)
 
-[ ] css in /dashboard/users/ (template: user_analytics.html) to:
+[x] css in /dashboard/users/ (template: user_analytics.html) to:
 	- render the table in a nicer way, perhaps showing the thumbs of the badge cell if the user has it
 	- format pagination and search form, to make it nicer and more compact. Perhaps pagination goes in the bottom  
 

@@ -15,7 +15,7 @@ from functools import wraps
 
 from ..db import get_db, sqlite3
 from ..auth import auth_check_dashboard, User
-from .. import utils as u
+from .. import utils as ut
 from .. user import create_user_in_db
 
 bp = Blueprint('users_analytics', __name__, url_prefix='/dashboard/users')
@@ -34,7 +34,7 @@ def index(user):
 	like_uname = "%{}%".format(uname)
 	# uncomment this to create fake users
 	# for i in range(100):
-	# 	create_user_in_db(u.random_string(6))
+	# 	create_user_in_db(ut.random_string(6))
 
 	try:
 		db = get_db()
@@ -68,8 +68,8 @@ def index(user):
 	h = request.path
 	u = "" if uname == "%" else "&uname={}".format(uname)
 	page_links = {
-	"prev_page" : "{}?pag={}{}".format(h, pag-1, u) if pag-1 > 0 else None,
-	"next_page" : "{}?pag={}{}".format(h, pag+1, u) if pag+1 < total_users // ixpag else None,
+	"prev_page" : "{}?pag={}{}".format(h, pag-1, u) if pag-1 >= 0 else None,
+	"next_page" : "{}?pag={}{}".format(h, pag+1, u) if pag+1 <= total_users // ixpag else None,
 	"first_page" : "{}?pag={}{}".format(h, 0, u),
 	"last_page" : "{}?pag={}{}".format(h, total_users // ixpag, u ),
 	"total_pages" : total_users // ixpag + 1,
