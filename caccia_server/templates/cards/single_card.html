@@ -45,9 +45,10 @@
   <!-- Single string answer enigma -->
   {% if card_data["enigmatype"] == "question" %}
     <p style="align-self:baseline; margin-bottom: 4px">{{card_data["question"].capitalize()}}</p>
-    <form style="width:100%" id="answerform" action="">
+    <form style="width:100%" id="answerform" action="/badges?card_id={{card_data["id"]}}" method="post">
       <input type="text" name="questionanswer" id="" autocomplete="off">
       <input type="submit" class="submitanswerbutton" value="Invia risposta">
+      <input type="text" id="play_time" name="play_time" value="0">
     </form>
   <!-- Radio buttons answer enigma -->
   {% elif card_data["enigmatype"] == "radiobutton"  %}
@@ -93,7 +94,9 @@
  -->
 
 <script>
+  var starttime;
   document.addEventListener("DOMContentLoaded", function(event) { 
+    starttime = window.performance.now();
     if ("{{ card_data["enigmatype"] }}" != "physical" ) {
       let answerform = document.getElementById("answerform")
       answerform.addEventListener("submit", handleAnswerSubmit);
@@ -101,18 +104,26 @@
   });
 
   function handleAnswerSubmit() {
+    endtime = window.performance.now();
     event.preventDefault()
-    try {
-      // Submit answer
-      const formData = new FormData(answerform);
-      formdata = formData.get("questionanswer")
-      if (formdata != null) {
-        alert(formdata.toLowerCase())
-      }
+    var playtime = endtime - starttime;
+    answerform.querySelector("#play_time").value = playtime;
+    alert(playtime)
+    answerform.submit()
+
+    
+    // try {
+    //   // Submit answer
+    //   const formData = new FormData(answerform);
+    //   //formdata = formData.get("questionanswer")
+    //   formData.append("play_time", 123)
+    //   var request = new XMLHttpRequest();
+    //   request.open("POST", "/badges");
+    //   request.send(formData);
   
-    } catch (error) {
-      console.error(error);
-    }
+    // } catch (error) {
+    //   console.error(error);
+    // }
   }
 </script>
 <script>

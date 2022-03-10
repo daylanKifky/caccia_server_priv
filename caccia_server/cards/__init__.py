@@ -112,6 +112,7 @@ def badges():
 			return render_template('cards/home.html')
 
 		play_time = request.form.get('play_time')
+		current_app.logger.info("####################################### {}".format(request.form) 	)
 		
 		enigma_key = None
 		try:
@@ -133,6 +134,10 @@ def badges():
 					WHERE id = ?;'''.format(enigma_key), (play_time, 1, c_uid))
 		db.commit()	
 		new_badge = card_id
+
+
+		tempres = db.execute("SELECT playtime from users WHERE id = ?", (c_uid,)).fetchone()
+		current_app.logger.info("-------------- {}".format(tempres[0]))
 
 	user_data = user.user_get_dict(c_uid)
 	if not user_data:
