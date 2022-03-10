@@ -118,7 +118,7 @@
     } else if ("{{card_data['enigmatype']}}" == "radiobutton") {
       try {
         radioanswer = answerform.querySelector(".radio-button input[type='radio']:checked + label").innerText
-        correctanswer = "{{card_data['answer'].split('|')[0]}}"
+        correctanswer = "{{correct_order_answers.split('|')[0]}}"
         if (radioanswer == correctanswer) {
           endtime = window.performance.now();
           event.preventDefault()

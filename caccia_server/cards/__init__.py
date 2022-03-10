@@ -1,6 +1,8 @@
 # import datetime
 import traceback
 
+import random
+
 # from urllib.parse import urlparse, urljoin
 
 from flask import (
@@ -64,6 +66,7 @@ def index():
 	
 	#get card_data
 	card_data = None
+	correct_order_answers = None
 	try:
 		card_data = api.cards_get_dict(card_id)
 	except Exception as e:
@@ -74,6 +77,12 @@ def index():
 	
 	if card_data:
 		card_data = card_data[0]
+		correct_order_answers = card_data["answer"]
+		if (card_data["enigmatype"] == "radiobutton"):
+			answers = card_data["answer"].split("|")
+			random.shuffle(answers)
+			shuffledstring = "|".join(str(x) for x in answers)
+			card_data["answer"] = shuffledstring
 	else:
 		flash("the requested card_id is not valid: {}".format(card_id))
 		return render_template('cards/home.html', first_card=request.path+"?card_id=0")
@@ -85,7 +94,8 @@ def index():
 							card_data=card_data,
 							badge_page=badge_page, 
 							next_card=next_card,
-							prev_card=prev_card)
+							prev_card=prev_card,
+							correct_order_answers=correct_order_answers)
 
 
 enigma_keys = ["enigma{}".format(i) for i in range(10)]
