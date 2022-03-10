@@ -39,3 +39,5 @@ BR-ENZO TODO:
 
 	for now the server prints the contents of this header to the console, 
 	@lor cosi puoi testare se lo stai mandando
+
+[ ] cambiare playtime a minuti

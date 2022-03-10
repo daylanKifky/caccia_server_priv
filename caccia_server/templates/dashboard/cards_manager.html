@@ -28,7 +28,6 @@
 								<select style="margin-left: 4px" name="enigmatype" id="enigmatype" class="enigmatype" data-cardid={{item["id"]}}>
 									<option value="question" {% if item["enigmatype"] == "question" %}selected{% endif %}>Question</option>
 									<option value="radiobutton" {% if item["enigmatype"] == "radiobutton" %}selected{% endif %}>Multiple Choice</option>
-									<option value="physical" {% if item["enigmatype"] == "physical" %}selected{% endif %}>QR</option>
 								</select>
 							</p>
 							<p class="carddetailsp">Domanda: <input name="question" class="cardsinput"  style="margin-bottom: 0px;" type="text" value="{{item['question']}}"></p>

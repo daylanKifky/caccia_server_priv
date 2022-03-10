@@ -48,12 +48,12 @@
     <form style="width:100%" id="answerform" action="/badges?card_id={{card_data["id"]}}" method="post">
       <input type="text" name="questionanswer" id="" autocomplete="off">
       <input type="submit" class="submitanswerbutton" value="Invia risposta">
-      <input type="text" id="play_time" name="play_time" value="0">
+      <input type="text" style="display:none" id="play_time" name="play_time" value="0">
     </form>
   <!-- Radio buttons answer enigma -->
   {% elif card_data["enigmatype"] == "radiobutton"  %}
     <p style="align-self:baseline; margin-bottom: 4px">{{card_data["question"].capitalize()}}</p>
-    <form style="width:100%" id="answerform" action="" autocomplete="off"> 
+    <form style="width:100%" id="answerform"  action="/badges?card_id={{card_data["id"]}}" method="post" autocomplete="off"> 
       <div class="radio-button">
         <input type="radio" id="option0" name="questionanswer" value="{{card_data["answer"].split("|")[0]}}">
         <label for="option0">{{card_data["answer"].split("|")[0]}}</label>
@@ -67,6 +67,7 @@
         <label for="option2">{{card_data["answer"].split("|")[2]}}</label>
       </div>
       <input type="submit" class="submitanswerbutton" value="Invia risposta">
+      <input type="text" style="display:none" id="play_time" name="play_time" value="0">
     </form>
   <!-- QR Code answer enigma -->
   {% elif card_data["enigmatype"] == "physical" %}
@@ -97,37 +98,43 @@
   var starttime;
   document.addEventListener("DOMContentLoaded", function(event) { 
     starttime = window.performance.now();
-    if ("{{ card_data["enigmatype"] }}" != "physical" ) {
+    if ("{{ card_data['enigmatype'] }}" != "physical" ) {
       let answerform = document.getElementById("answerform")
       answerform.addEventListener("submit", handleAnswerSubmit);
     }
   });
 
   function handleAnswerSubmit() {
-    endtime = window.performance.now();
     event.preventDefault()
-    var playtime = endtime - starttime;
-    answerform.querySelector("#play_time").value = playtime;
-    alert(playtime)
-    answerform.submit()
+    formdata = new FormData(answerform)
+    if ("{{card_data['enigmatype']}}" == "question" && formdata.get("questionanswer") != null) {
+      if (formdata.get("questionanswer") == "{{card_data['answer']}}") {
+        endtime = window.performance.now();
+        event.preventDefault()
+        var playtime = endtime - starttime;
+        answerform.querySelector("#play_time").value = playtime;
+        answerform.submit()
+      }
+    } else if ("{{card_data['enigmatype']}}" == "radiobutton") {
+      try {
+        radioanswer = answerform.querySelector(".radio-button input[type='radio']:checked + label").innerText
+        correctanswer = "{{card_data['answer'].split('|')[0]}}"
+        if (radioanswer == correctanswer) {
+          endtime = window.performance.now();
+          event.preventDefault()
+          var playtime = endtime - starttime;
+          answerform.querySelector("#play_time").value = playtime;
+          answerform.submit()
+        }
+      } catch {
+        alert("Seleziona una risposta")
+      }
 
-    
-    // try {
-    //   // Submit answer
-    //   const formData = new FormData(answerform);
-    //   //formdata = formData.get("questionanswer")
-    //   formData.append("play_time", 123)
-    //   var request = new XMLHttpRequest();
-    //   request.open("POST", "/badges");
-    //   request.send(formData);
-  
-    // } catch (error) {
-    //   console.error(error);
-    // }
+    }
   }
 </script>
 <script>
-  if ("{{ card_data["enigmatype"] }}" == "physical" ) {
+  if ("{{ card_data['enigmatype'] }}" == "physical" ) {
     document.addEventListener("DOMContentLoaded", function (event) {
       const spinner_target = document.querySelector("#spinner-area");
       spinner_target.hidden = true
