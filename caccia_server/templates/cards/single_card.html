@@ -117,7 +117,8 @@
       }
     } else if ("{{card_data['enigmatype']}}" == "radiobutton") {
       try {
-        radioanswer = answerform.querySelector(".radio-button input[type='radio']:checked + label").innerText
+        radioanswerdom = answerform.querySelector(".radio-button input[type='radio']:checked + label")
+        radioanswer = radioanswerdom.innerText
         correctanswer = "{{correct_order_answers.split('|')[0]}}"
         if (radioanswer == correctanswer) {
           endtime = window.performance.now();
@@ -125,6 +126,8 @@
           var playtime = endtime - starttime;
           answerform.querySelector("#play_time").value = playtime;
           answerform.submit()
+        } else {
+          radioanswerdom.style.backgroundColor = "#cc6363"
         }
       } catch {
         alert("Seleziona una risposta")
