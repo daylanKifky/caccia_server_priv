@@ -12,6 +12,7 @@ from os.path import join
 
 from ..db import get_db
 from .. import utils as u
+from ..auth import auth_check_dashboard
 
 bp = Blueprint('api_cards', __name__, url_prefix='/cards')
 
@@ -57,8 +58,8 @@ def cards_get():
     return jsonify(response)
     
 @bp.route('/', methods=('POST',))
-# @auth_check_dashboard(redirect_to_login=True) 
-def populate_msg():
+@auth_check_dashboard(redirect_to_login=True) 
+def populate_msg(uid):
     # print("***** POST /cards cookies", request.cookies)
     print("***** POST /cards x-access-tokens", getattr(request, "x-access-tokens", "NOT FOUND"))
 
@@ -95,7 +96,7 @@ def populate_msg():
 
 
 @bp.route('/image/', methods=('POST',)) 
-# @auth_check_dashboard(redirect_to_login=True)
+@auth_check_dashboard(redirect_to_login=True)
 def image(user=None):
     print("***** POST /cards/image x-access-tokens", getattr(request, "x-access-tokens", "NOT FOUND"))
 
