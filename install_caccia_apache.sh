@@ -22,8 +22,8 @@ rm -rf sqlite-tools-linux-*
 # Search for the .so in the sytem or shared library RPATH
 # Normally is in /usr/lib/x86_64-linux-gnu/libsqlite3.so.0
 
-SHLIBDIR=/usr/lib/x86_64-linux-gnu
-sudo cp sqlite_3-34-0/libsqlite3.* $SHLIBDIR
+# SHLIBDIR=/usr/lib/x86_64-linux-gnu
+# sudo cp sqlite_3-34-0/libsqlite3.* $SHLIBDIR
 
 echo "= Creating folders"
 INSTALL_DIR=/var/www/flask_sites
@@ -50,9 +50,9 @@ cp -r ~/instance $INSTALL_DIR
 venv/bin/flask init-db
 
 #comment-out these lines for production!
-echo "= Creating fake users"
-venv/bin/flask create-fake-users 100
-echo 'DEBUG=True' > $INSTALL_DIR/instance/config.py
+# echo "= Creating fake users"
+# venv/bin/flask create-fake-users 100
+# echo 'DEBUG=True' > $INSTALL_DIR/instance/config.py
 
 echo "= Configure Apache"
 sudo a2enmod rewrite
