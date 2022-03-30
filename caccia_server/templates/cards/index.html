@@ -1,15 +1,16 @@
 {% extends 'cards/base.html' %}
 
 {% block navigation %}
-  <div id="temp user block" style="display: flex;align-items: center;">
-    {% if session.get('_caccia_user_id', None)%}
-    <p style="flex:1; color: #3d93b6; font-weight: bold">{{session.get('_caccia_user_name', None)}} {# (id {{session.get('_caccia_user_id', None)}}) #}</p>
-    <a class="usermenubutton" href="/">Home</a>
-    <a class="usermenubutton" href="/badges?card_id=0">Badges</a>
-    <a class="usermenubutton" href="/user/logout">Esci</a>
-    {% endif %}
-  </div>
-  
+<div id="temp user block" style="display: flex;align-items: center;">
+  {% if session.get('_caccia_user_id', None)%}
+  <p style="flex:1; color: #3d93b6; ">{{session.get('_caccia_user_name', None)}} {# (id {{session.get('_caccia_user_id',
+    None)}}) #}</p>
+  <a class="usermenubutton" style="padding-left: 16px; border-radius: 20px 0px 0px 20px;" href="/">Home</a>
+  <a class="usermenubutton" href="/badges?card_id=0">Badges</a>
+  <a class="usermenubutton" style="padding-right: 14px; margin-right: -20px;" href="/user/logout">Esci</a>
+  {% endif %}
+</div>
+
 <!-- <nav id="navigation">
   <a href="{{ url_for( 'cards_manager.index') }}">Cards</a>
   <a href="{{ url_for( 'users_analytics.index') }}">Users</a>

@@ -43,7 +43,7 @@
 <p style="display: none"><strong>MAP_IMAGE:</strong> {{map_image}}</p>
 
 {% if new_badge != -1 %}
-  <div style=" color: rgb(98, 190, 227); font-weight: bold;display: flex;flex-direction: column;align-items: center; font-size: 30px">
+  <div class="flash" style="padding:8px; color: white; font-weight: bold;display: flex;flex-direction: column;align-items: center; font-size: 16px; text-shadow: 0 0 1px black, 0 0 1px black, 0 0 1px black, 0 0 1px black;">
     Hai vinto il badge!
     <img src="static/rewards/{{new_badge+1}}.png" alt="" style="width: 50%; max-width:200px">
 
@@ -55,7 +55,7 @@
 </div>
 
 <div style="display: flex; flex-direction:column; justify-content: center; margin-bottom: 20px; font-weight: normal; color: rgb(134, 134, 134);">
-  <p>I tuoi badge</p>
+  <p style="text-align: center; color: #da7661; font-size: 16px;padding: 4px;">I tuoi badge</p>
   <div class="badges-grid" style=" flex:1">
     {% for i in user_badges %}
       {% if i == 1 %}
@@ -71,8 +71,8 @@
   </div>
 </div>
 <div style="display: flex; flex-direction:column; justify-content: center; margin-bottom: 20px; font-weight: normal; color: rgb(134, 134, 134)">
-  <p>Mappa del prossimo indizio</p>
   <img style="width: 100%; max-width:400px" src="{{map_image}}" alt="">
+  <p style="text-align: center;background: #d96a52;margin-top: 0px;color: white;padding: 2px;font-size: 14px;">Mappa del prossimo indizio</p>
 </div>
 
 

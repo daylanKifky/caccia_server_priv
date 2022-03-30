@@ -1,7 +1,8 @@
 <!doctype html>
+
 <head>
   <title>{% block title %}{% endblock %} - Caccia al tesoro</title>
-<!-- 
+  <!-- 
   <link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', filename='apple-touch-icon.png') }}">
   <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='favicon-32x32.png') }}">
   <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='favicon-16x16.png') }}">
@@ -9,25 +10,27 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <link rel="preconnect" href="https://fonts.gstatic.com">
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<!-- 
+  <!-- 
 
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
   <link rel="manifest" href="/site.webmanifest"> -->
 </head>
+
 <body>
   <nav id="top_nav">
     <img src="{{ url_for('static', filename='logo-explora.jpg') }}">
     <h1>Dashboard</h1>
-    <ul>
+    <ul style="align-items: center;">
       {% if g.user %}
-        <li><span>{{ g.user['email'] }}</span>
-        <li><a href="{{ url_for('dashboard.logout') }}">[Log Out]</a>
-      {% else %}
-        <li><a href="{{ url_for('dashboard.login') }}">Log In</a>
+        <li><span>{{ g.user['email'] }}</span></li>
+        <li><a class="submitanswerbutton" style="background: #ca4b64; text-decoration: none; font-weight:300; font-size:12px" href="{{ url_for('dashboard.logout') }}">Logout</a></li>
       {% endif %}
     </ul>
   </nav>
@@ -39,7 +42,7 @@
       {% block header %}{% endblock %}
     </header>
     {% for message in get_flashed_messages() %}
-      <div class="flash">{{ message }}</div>
+    <div class="flash">{{ message }}</div>
     {% endfor %}
     {% block content %}{% endblock %}
   </section>

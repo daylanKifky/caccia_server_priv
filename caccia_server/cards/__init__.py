@@ -181,4 +181,3 @@ def badges():
 							new_badge= new_badge, 
 							user_badges= user_badges,
 							map_image= map_image)
-

@@ -1,7 +1,8 @@
 <!doctype html>
+
 <head>
   <title>{% block title %}{% endblock %} - Caccia al tesoro</title>
-<!-- 
+  <!-- 
   <link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', filename='apple-touch-icon.png') }}">
   <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='favicon-32x32.png') }}">
   <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='favicon-16x16.png') }}">
@@ -19,6 +20,7 @@
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
   <link rel="manifest" href="/site.webmanifest"> -->
 </head>
+
 <body>
   <nav id="top_nav" style="margin-bottom: 14px;">
     <img src="{{ url_for('static', filename='logo-explora.jpg') }}">
@@ -35,12 +37,12 @@
 
   {% block navigation %}{% endblock %}
 
-  <section class="content">
+  <section class="content" style="align-items: center; display: flex; flex-direction: column;">
     <header>
       {% block header %}{% endblock %}
     </header>
     {% for message in get_flashed_messages() %}
-      <div class="flash">{{ message }}</div>
+    <div class="flash">{{ message }}</div>
     {% endfor %}
     {% block content %}{% endblock %}
   </section>
