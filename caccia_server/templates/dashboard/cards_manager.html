@@ -53,15 +53,17 @@
 									<input id="imageinput" style="margin-left:4px; margin-bottom: 0px" type="file" name="file" >
 								</p>
 							</div>
-							<div><p class="carddetailsp"  style="margin-top:0px"><a id="cardimage" style="font-size: 12px;" href="{{item["image"]}}">Visualizza immagine</a></p></div>
-
+							<!-- <div><p class="carddetailsp"  style="margin-top:0px"><a id="cardimage" style="font-size: 12px;" href="{{item["image"]}}">Visualizza immagine</a></p></div> -->
+							<a href="{{item['image']}}"><img src="{{item['image']}}" alt="" style="width:100px"></a>
 							<div>
 								<p class="carddetailsp">
 									Mappa: 
 									<input id="mapimageinput" style="margin-left:4px; margin-bottom: 0px" type="file" name="file">									
 								</p>
 							</div>
-							<div><p class="carddetailsp" style="margin-top:0px"><a id="mapimage" style="font-size: 12px;" href="{{item["mapimage"]}}">Visualizza mappa</a></p></div>
+							<a href="{{item['mapimage']}}"><img src="{{item['mapimage']}}" alt="" style="width:100px"></a>
+
+							<!-- <div><p class="carddetailsp" style="margin-top:0px"><a id="mapimage" style="font-size: 12px;" href="{{item["mapimage"]}}">Visualizza mappa</a></p></div> -->
 							<!-- <img style="padding: 8px;min-width:100px; max-width:200px" id="questionimage" src="{{item["image"]}}" alt=""> -->
 							<div style="margin-top: 14px;"><input type="submit" value="Salva" class="cardbutton"></div>
 
