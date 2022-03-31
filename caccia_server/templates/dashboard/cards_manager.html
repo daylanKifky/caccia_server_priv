@@ -4,8 +4,8 @@
 
 	{% block navigation %}
 	<nav id="navigation">
-	  <a class="current" href="{{ url_for( 'cards_manager.index') }}">Cards</a>
-	  <a href="{{ url_for( 'users_analytics.index') }}">Users</a>
+	  <a class="current" href="{{ url_for( 'cards_manager.index') }}">Domande</a>
+	  <a href="{{ url_for( 'users_analytics.index') }}">Utenti</a>
 	</nav>
 	{% endblock %}
 
@@ -20,14 +20,14 @@
 	    	<section style="display: flex; flex-direction: column; padding-top: 10px">  		
 				{% for item in data %}
 				<details>
-					<summary>Card {{item['id']}}</summary>
+					<summary>Domanda {{item['id']}}</summary>
 					<div>
 						<form class="submitcard" action="/cards/" data-cardid={{item["id"]}} autocomplete="off" enctype="multipart/form-data">
 							<p class="carddetailsp">
-								Type:
+								Tipologia:
 								<select style="margin-left: 4px" name="enigmatype" id="enigmatype" class="enigmatype" data-cardid={{item["id"]}}>
-									<option value="question" {% if item["enigmatype"] == "question" %}selected{% endif %}>Question</option>
-									<option value="radiobutton" {% if item["enigmatype"] == "radiobutton" %}selected{% endif %}>Multiple Choice</option>
+									<option value="question" {% if item["enigmatype"] == "question" %}selected{% endif %}>Domanda</option>
+									<option value="radiobutton" {% if item["enigmatype"] == "radiobutton" %}selected{% endif %}>Scelta Multipla</option>
 								</select>
 							</p>
 							<p class="carddetailsp">Domanda: <input name="question" class="cardsinput"  style="margin-bottom: 0px;" type="text" value="{{item['question']}}"></p>
@@ -49,21 +49,21 @@
 							</div>
 							<div>
 								<p class="carddetailsp">
-									Image: 
+									Immagine: 
 									<input id="imageinput" style="margin-left:4px; margin-bottom: 0px" type="file" name="file" >
 								</p>
 							</div>
-							<div><p class="carddetailsp"  style="margin-top:0px"><a id="cardimage" style="font-size: 12px;" href="{{item["image"]}}">Current Image</a></p></div>
+							<div><p class="carddetailsp"  style="margin-top:0px"><a id="cardimage" style="font-size: 12px;" href="{{item["image"]}}">Visualizza immagine</a></p></div>
 
 							<div>
 								<p class="carddetailsp">
-									Map: 
+									Mappa: 
 									<input id="mapimageinput" style="margin-left:4px; margin-bottom: 0px" type="file" name="file">									
 								</p>
 							</div>
-							<div><p class="carddetailsp" style="margin-top:0px"><a id="mapimage" style="font-size: 12px;" href="{{item["mapimage"]}}">Current Map</a></p></div>
+							<div><p class="carddetailsp" style="margin-top:0px"><a id="mapimage" style="font-size: 12px;" href="{{item["mapimage"]}}">Visualizza mappa</a></p></div>
 							<!-- <img style="padding: 8px;min-width:100px; max-width:200px" id="questionimage" src="{{item["image"]}}" alt=""> -->
-							<div style="margin-top: 14px;"><input type="submit" value="Save" class="cardbutton"></div>
+							<div style="margin-top: 14px;"><input type="submit" value="Salva" class="cardbutton"></div>
 
 							<p class="carddetailsp" style="font-size: small; font-style: oblique;">Last modified: {{item["modified"]}}</p>
 						</form>

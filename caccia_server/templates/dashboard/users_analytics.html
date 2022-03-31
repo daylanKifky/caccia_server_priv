@@ -54,8 +54,8 @@
 		}
 	</style>
 	<nav id="navigation">
-	  <a href="{{ url_for( 'cards_manager.index') }}">Cards</a>
-	  <a class="current" href="{{ url_for( 'users_analytics.index') }}">Users</a>
+	  <a href="{{ url_for( 'cards_manager.index') }}">Domande</a>
+	  <a class="current" href="{{ url_for( 'users_analytics.index') }}">Utenti</a>
 	</nav>
 
 	{% endblock %}
@@ -81,13 +81,13 @@ JSON
 		    	
 		    	
 		    	<form method="get" action="{{request.path}}" >
-					<label for="uname">Search by username</label>
+					<label for="uname">Cerca username</label>
 					<input name="uname" value="{{request.args.get('uname', '')}}" style="margin-bottom: 0px;">
-					<input type="submit" value="Search">
+					<input type="submit" value="Cerca">
 			    </form> 
 
 			    {% if request.args.get("uname", None) %}
-			    <a class="usermenubutton" style="background-color: #377ba8; color: white" href="{{request.path}}">Clear search</a>
+			    <a class="usermenubutton" style="background-color: #377ba8; color: white" href="{{request.path}}">Azzera ricerca</a>
 			    {% endif %}
 
 			    {% if users %}

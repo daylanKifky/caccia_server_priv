@@ -39,8 +39,12 @@
     animation-duration: 1s !important; 
   }
 </style>
+
 <!-- Card content -->
+<div class="flash_error">Risposta sbagliata, riprova!</div>
+
 <img style="padding: 3px;min-width: 200px;width: 80%;max-width: 300px;border-radius: 14px;box-shadow:0px 1px 4px 0px #00000036;margin-top: 10px;" id="questionimage" src="{{card_data['image']}}" alt="">
+
 <div style="display: flex; flex-direction:column; align-items:center">
   <!-- Single string answer enigma -->
   {% if card_data["enigmatype"] == "question" %}
@@ -82,7 +86,6 @@
   {% endif %}
 </div>
 
-
 <!-- <h2>CARD: {{card_data['id']}}</h2>
 <ul>
   {% for key, value in card_data.items() %}
@@ -108,12 +111,15 @@
     event.preventDefault()
     formdata = new FormData(answerform)
     if ("{{card_data['enigmatype']}}" == "question" && formdata.get("questionanswer") != null) {
-      if (formdata.get("questionanswer") == "{{card_data['answer']}}") {
+      if (formdata.get("questionanswer").toLowerCase() == "{{card_data['answer'].lower()}}") {
         endtime = window.performance.now();
         event.preventDefault()
         var playtime = endtime - starttime;
         answerform.querySelector("#play_time").value = playtime;
         answerform.submit()
+      } else {
+        document.querySelector(".flash_error").style.opacity = 1;
+        setTimeout(() => {document.querySelector(".flash_error").style.opacity = 0;}, 1500)
       }
     } else if ("{{card_data['enigmatype']}}" == "radiobutton") {
       try {
