@@ -30,6 +30,7 @@
 									<option value="radiobutton" {% if item["enigmatype"] == "radiobutton" %}selected{% endif %}>Scelta Multipla</option>
 								</select>
 							</p>
+
 							<!-- <p style="margin-top: 10px" class="carddetailsp">Domanda: <input name="question" class="cardsinput"  style="margin-bottom: 0px;" type="text" value="{{item['question']}}"></p> -->
 							<p style="margin-top: 10px" class="carddetailsp">Domanda:</p>
 							<div class="editor-container" data-question="{{item['question']}}" id="editor-container-{{item['id']}}"></div>
@@ -38,26 +39,29 @@
 								Risposta: 
 								<input name="answer" class="cardsinput" style="margin-bottom: 0px;" type="text" value="{{item['answer'].split('|')[0]}}">
 							</p>
+
 							<div data-cardid={{item["id"]}}>
 								<p class="carddetailsp" >
 									Altra Opzione 1: 
 									<input name="otheroption1" class="cardsinput" style="margin-bottom: 0px;" type="text" value="{{item['answer'].split('|')[1]}}">
 								</p>
 							</div>
+
 							<div data-cardid={{item["id"]}}>
 								<p class="carddetailsp" >
 									Altra Opzione 2: 
 									<input name="otheroption2" class="cardsinput" style="margin-bottom: 0px;" type="text" value="{{item['answer'].split('|')[2]}}">
 								</p>
 							</div>
+
 							<div>
 								<p class="carddetailsp" style="margin-top: 20px">
 									Immagine: 
 									<input id="imageinput" style="margin-left:4px; margin-bottom: 0px" type="file" name="file" >
 								</p>
-							</div>
-							<!-- <div><p class="carddetailsp"  style="margin-top:0px"><a id="cardimage" style="font-size: 12px;" href="{{item["image"]}}">Visualizza immagine</a></p></div> -->
+							</div>							
 							<a id="cardimage" href="{{item['image']}}" style="align-self: baseline;"><img src="{{item['image']}}" alt="" style="width:100px; margin-left: 4px"></a>
+
 							<div>
 								<p class="carddetailsp">
 									Mappa: 
@@ -66,11 +70,12 @@
 							</div>
 							<a id="mapimage" href="{{item['mapimage']}}" style="align-self: baseline;"><img src="{{item['mapimage']}}" alt="" style="width:100px; margin-left: 4px"></a>
 
-							<!-- <div><p class="carddetailsp" style="margin-top:0px"><a id="mapimage" style="font-size: 12px;" href="{{item["mapimage"]}}">Visualizza mappa</a></p></div> -->
-							<!-- <img style="padding: 8px;min-width:100px; max-width:200px" id="questionimage" src="{{item["image"]}}" alt=""> -->
+							<p style="margin-top: 10px" class="carddetailsp">Info:</p>
+							<div class="info-container" data-info="info" id="info-container-{{item['id']}}"></div>
+							
 							<div style="margin-top: 14px;  margin-left: 4px"><input type="submit" value="Salva" class="cardbutton"></div>
-
 							<p class="carddetailsp" style="font-size: small; font-style: oblique;">Ultima modifica: {{item["modified"]}}</p>
+
 						</form>
 					</div>
 				</details>
@@ -81,6 +86,7 @@
 		<script>
 
 			let quills = []
+			let infoquills = []
 
 			document.addEventListener("DOMContentLoaded", function(event) {
 				// On enigmatype selection
@@ -120,13 +126,25 @@
 					});
 					
 					quill.root.innerHTML = e.dataset.question;
-
 					quills.push(quill);
-
-
 				})
 
-				
+				document.querySelectorAll(".info-container").forEach((e) => {
+					let quill = new Quill("#" + e.id, {
+						modules: {
+						  toolbar: [
+							[{ header: [1, 2, false] }],
+							['bold', 'italic', 'underline'],
+						  ]
+						},
+						placeholder: 'Info',
+						theme: 'snow'  // or 'bubble'
+					});
+					
+					quill.root.innerHTML = e.dataset.info;
+					infoquills.push(quill);
+				})
+
 			});
 
 			function changedSelectEnigma(event) {
