@@ -21,7 +21,7 @@
 				{% for item in data %}
 				<details>
 					<summary>Domanda {{item['id']}}</summary>
-					<div>
+					<div class="div-domanda">
 						<form class="submitcard" action="/cards/" data-cardid={{item["id"]}} autocomplete="off" enctype="multipart/form-data">
 							<p class="carddetailsp">
 								Tipologia:
@@ -30,8 +30,11 @@
 									<option value="radiobutton" {% if item["enigmatype"] == "radiobutton" %}selected{% endif %}>Scelta Multipla</option>
 								</select>
 							</p>
-							<p class="carddetailsp">Domanda: <input name="question" class="cardsinput"  style="margin-bottom: 0px;" type="text" value="{{item['question']}}"></p>
-							<p class="carddetailsp">
+							<!-- <p style="margin-top: 10px" class="carddetailsp">Domanda: <input name="question" class="cardsinput"  style="margin-bottom: 0px;" type="text" value="{{item['question']}}"></p> -->
+							<p style="margin-top: 10px" class="carddetailsp">Domanda:</p>
+							<div class="editor-container" data-question="{{item['question']}}" id="editor-container-{{item['id']}}"></div>
+
+							<p style="margin-top: 20px" class="carddetailsp">
 								Risposta: 
 								<input name="answer" class="cardsinput" style="margin-bottom: 0px;" type="text" value="{{item['answer'].split('|')[0]}}">
 							</p>
@@ -48,24 +51,24 @@
 								</p>
 							</div>
 							<div>
-								<p class="carddetailsp">
+								<p class="carddetailsp" style="margin-top: 20px">
 									Immagine: 
 									<input id="imageinput" style="margin-left:4px; margin-bottom: 0px" type="file" name="file" >
 								</p>
 							</div>
 							<!-- <div><p class="carddetailsp"  style="margin-top:0px"><a id="cardimage" style="font-size: 12px;" href="{{item["image"]}}">Visualizza immagine</a></p></div> -->
-							<a href="{{item['image']}}"><img src="{{item['image']}}" alt="" style="width:100px"></a>
+							<a id="cardimage" href="{{item['image']}}" style="align-self: baseline;"><img src="{{item['image']}}" alt="" style="width:100px; margin-left: 4px"></a>
 							<div>
 								<p class="carddetailsp">
 									Mappa: 
 									<input id="mapimageinput" style="margin-left:4px; margin-bottom: 0px" type="file" name="file">									
 								</p>
 							</div>
-							<a href="{{item['mapimage']}}"><img src="{{item['mapimage']}}" alt="" style="width:100px"></a>
+							<a id="mapimage" href="{{item['mapimage']}}" style="align-self: baseline;"><img src="{{item['mapimage']}}" alt="" style="width:100px; margin-left: 4px"></a>
 
 							<!-- <div><p class="carddetailsp" style="margin-top:0px"><a id="mapimage" style="font-size: 12px;" href="{{item["mapimage"]}}">Visualizza mappa</a></p></div> -->
 							<!-- <img style="padding: 8px;min-width:100px; max-width:200px" id="questionimage" src="{{item["image"]}}" alt=""> -->
-							<div style="margin-top: 14px;"><input type="submit" value="Salva" class="cardbutton"></div>
+							<div style="margin-top: 14px;  margin-left: 4px"><input type="submit" value="Salva" class="cardbutton"></div>
 
 							<p class="carddetailsp" style="font-size: small; font-style: oblique;">Ultima modifica: {{item["modified"]}}</p>
 						</form>
@@ -76,6 +79,8 @@
 		    	
 	    {% endif %}
 		<script>
+
+			let quills = []
 
 			document.addEventListener("DOMContentLoaded", function(event) {
 				// On enigmatype selection
@@ -101,6 +106,27 @@
 				cardforms.forEach((form) => {
 					form.addEventListener("submit", handleFormSubmit);
 				})
+
+				document.querySelectorAll(".editor-container").forEach((e) => {
+					let quill = new Quill("#" + e.id, {
+						modules: {
+						  toolbar: [
+							[{ header: [1, 2, false] }],
+							['bold', 'italic', 'underline'],
+						  ]
+						},
+						placeholder: 'Domanda',
+						theme: 'snow'  // or 'bubble'
+					});
+					
+					quill.root.innerHTML = e.dataset.question;
+
+					quills.push(quill);
+
+
+				})
+
+				
 			});
 
 			function changedSelectEnigma(event) {
@@ -156,6 +182,8 @@
 					}
 					formData.delete("otheroption1");
 					formData.delete("otheroption2");
+					formData.delete("question");
+					formData.append("question", quills[form.querySelector(".editor-container").id.slice(-1)].root.innerHTML)
 					formData.append("id", form.dataset.cardid);
 					formData.append("image", image_url)
 					formData.append("mapimage", map_image_url)
@@ -226,6 +254,8 @@
 				
 				return response.json();
 			}
+
+
 		</script>
     {% endblock %}
 

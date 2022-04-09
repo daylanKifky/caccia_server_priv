@@ -22,6 +22,9 @@ strong {
 	}
 }
 
+.editor-container {
+	color: black;
+}
 
 body {
 	/*! max-width: 960px; */
