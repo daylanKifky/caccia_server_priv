@@ -1,6 +1,8 @@
 {% extends 'cards/index.html' %}
 
 {% if session.get('_caccia_user_id', None)%}
+
+{% block title %}Card {{card_data['id'] + 1 }}{% endblock %}
 {% block content %}
 
 <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>

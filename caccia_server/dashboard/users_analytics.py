@@ -52,8 +52,9 @@ def index(user):
 
 		response = []
 		for row in res:
-
-			response.append({k.replace('enigma', 'e'):row[k] for k in row.keys()})
+			this_row = {k.replace('enigma', 'e'):row[k] for k in row.keys()}
+			this_row['id'] = "{:05d}".format(this_row['id'])
+			response.append(this_row)
 		
 	except Exception as e:
 		err_id = u.get_error_id()

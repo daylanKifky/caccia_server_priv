@@ -1,12 +1,14 @@
 {% extends 'cards/index.html' %}
 
+{% block title %}Ingressa{% endblock %}
+
 {% block content %}
 
 <div style="display: flex; flex-direction:column; align-items: center;">
     <p id="introp" style="text-align: center;">Benvenuto nella caccia al tesoro!<br>Per iniziare scegli il tuo nome</p>
 
     <form class="submitcard" enctype="application/x-www-form-urlencoded" action="/user/" method="post">
-        <input name="username" style="margin-bottom: 0px;padding: 5px" type="text" value="Pippo">
+        <input name="username" style="margin-bottom: 0px;padding: 5px" type="text" value="">
         <input type="submit" value="Entra" style="margin-top: 20px;" class="submitanswerbutton">
     </form>
 

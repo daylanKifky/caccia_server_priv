@@ -40,6 +40,10 @@ def create_user():
 
 	username = request.form['username']
 
+	if not username:
+		flash("Ingressa un nome utente")
+		return render_template('cards/init.html')
+
 	try:
 		uid = create_user_in_db(username)
 	except Exception as error:
@@ -58,9 +62,10 @@ def create_user():
 
 @bp.route('/logout', methods=('GET',)) 
 def logout_user():
-	session.pop('_caccia_user_id')
-	session.pop('_caccia_user_name')
-	flash("logout sucessful")
+	if session.get('_caccia_user_id', None):
+		session.pop('_caccia_user_id')
+		session.pop('_caccia_user_name')
+		flash("logout sucessful")
 	return render_template('cards/init.html')
 
 def user_get_dict(uid):
