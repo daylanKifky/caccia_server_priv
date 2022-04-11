@@ -54,10 +54,12 @@ def index(user):
 		for row in res:
 			this_row = {k.replace('enigma', 'e'):row[k] for k in row.keys()}
 			this_row['id'] = "{:05d}".format(this_row['id'])
+			playt = datetime.timedelta(milliseconds=int(this_row['playtime']))
+			this_row['playtime'] = ut.strfdelta(playt, "{hours:02d}:{minutes:02d}:{seconds:02d}")
 			response.append(this_row)
 		
 	except Exception as e:
-		err_id = u.get_error_id()
+		err_id = ut.get_error_id()
 
 		current_app.logger.error('[ Get users list error | error_id: %s ] %s\n%s---' % (err_id, e, traceback.format_exc()) )
 
