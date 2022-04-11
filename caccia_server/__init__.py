@@ -17,7 +17,7 @@ def create_app(test_config=None):
     app.config.from_mapping(
         SECRET_KEY='deva',
         DATABASE=os.path.join(app.instance_path, 'caccia_db.sqlite'),
-        FIREBASE_CONF=os.path.join(app.instance_path, 'caccia-dev-firebase-adminsdk-mx38s-e97572b173.json'),
+        FIREBASE_CONF=os.path.join(app.instance_path, 'caccia-3e3b3-firebase-adminsdk-laqso-580a1fec1b.json'),
         # MIN_TIME_REQUESTS = 0.8,
         # FAKE_USERS = 100,
         # MAX_CSV_LINES = 100,

@@ -1,6 +1,8 @@
 X
 instance/*.sqlite
 instance/*firebase*.json
+instance/*/*firebase*.json
+
 caccia_server/static/content/*.png
 caccia_server/static/content/*.jpeg
 caccia_server/static/content/*.jpg
