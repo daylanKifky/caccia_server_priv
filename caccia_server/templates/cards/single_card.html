@@ -1,6 +1,8 @@
 {% extends 'cards/index.html' %}
 
 {% if session.get('_caccia_user_id', None)%}
+
+{% block title %}Card {{card_data['id'] + 1 }}{% endblock %}
 {% block content %}
 
 <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
@@ -48,7 +50,7 @@
 <div style="display: flex; flex-direction:column; align-items:center">
   <!-- Single string answer enigma -->
   {% if card_data["enigmatype"] == "question" %}
-    <p style="align-self:baseline; margin-bottom: 4px">{{card_data["question"].capitalize()}}</p>
+    <p style="align-self:baseline; margin-bottom: 4px">{{card_data["question"].capitalize() | safe}}</p>
     <form style="width:100%" id="answerform" action="/badges?card_id={{card_data['id']}}" method="post">
       <input type="text" name="questionanswer" id="" autocomplete="off">
       <input type="submit" class="submitanswerbutton" value="Invia risposta">
@@ -56,7 +58,7 @@
     </form>
   <!-- Radio buttons answer enigma -->
   {% elif card_data["enigmatype"] == "radiobutton"  %}
-    <p style="align-self:baseline; margin-bottom: 4px">{{card_data["question"].capitalize()}}</p>
+    <p style="align-self:baseline; margin-bottom: 4px">{{card_data["question"].capitalize() | safe }}</p>
     <form style="width:100%" id="answerform"  action="/badges?card_id={{card_data['id']}}" method="post" autocomplete="off"> 
       <div class="radio-button">
         <input type="radio" id="option0" name="questionanswer" value="{{card_data['answer'].split('|')[0]}}">

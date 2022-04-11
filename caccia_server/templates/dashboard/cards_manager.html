@@ -70,8 +70,8 @@
 							</div>
 							<a id="mapimage" href="{{item['mapimage']}}" style="align-self: baseline;"><img src="{{item['mapimage']}}" alt="" style="width:100px; margin-left: 4px"></a>
 
-							<p style="margin-top: 10px" class="carddetailsp">Info:</p>
-							<div class="info-container" data-info="info" id="info-container-{{item['id']}}"></div>
+							<p style="margin-top: 10px" class="carddetailsp">Postdata:</p>
+							<div class="info-container" data-postdata="{{item['postdata']}}" id="info-container-{{item['id']}}"></div>
 							
 							<div style="margin-top: 14px;  margin-left: 4px"><input type="submit" value="Salva" class="cardbutton"></div>
 							<p class="carddetailsp" style="font-size: small; font-style: oblique;">Ultima modifica: {{item["modified"]}}</p>
@@ -141,7 +141,7 @@
 						theme: 'snow'  // or 'bubble'
 					});
 					
-					quill.root.innerHTML = e.dataset.info;
+					quill.root.innerHTML = e.dataset.postdata;
 					infoquills.push(quill);
 				})
 
@@ -201,7 +201,9 @@
 					formData.delete("otheroption1");
 					formData.delete("otheroption2");
 					formData.delete("question");
-					formData.append("question", quills[form.querySelector(".editor-container").id.slice(-1)].root.innerHTML)
+					formData.append("question", quills[form.querySelector(".editor-container").id.slice(-1)].root.innerHTML);
+					formData.append("postdata", infoquills[form.querySelector(".info-container").id.slice(-1)].root.innerHTML);
+
 					formData.append("id", form.dataset.cardid);
 					formData.append("image", image_url)
 					formData.append("mapimage", map_image_url)

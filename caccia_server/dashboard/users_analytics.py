@@ -52,8 +52,9 @@ def index(user):
 
 		response = []
 		for row in res:
-
-			response.append({k.replace('enigma', 'e'):row[k] for k in row.keys()})
+			this_row = {k.replace('enigma', 'e'):row[k] for k in row.keys()}
+			this_row['id'] = "{:05d}".format(this_row['id'])
+			response.append(this_row)
 		
 	except Exception as e:
 		err_id = u.get_error_id()
@@ -63,7 +64,6 @@ def index(user):
 		int_error = jsonify({"status": "error", "reason": "internal error", "error_id": err_id})
 		return make_response( int_error, 500 )
 
-	print("pag +1", pag+1 , "tot/ixpag", total_users // ixpag)
 
 	h = request.path
 	u = "" if uname == "%" else "&uname={}".format(uname)
@@ -76,6 +76,5 @@ def index(user):
 	"this_page" : pag + 1
 
 	}
-	print(page_links)
 
 	return render_template('dashboard/users_analytics.html', users=response, **page_links)

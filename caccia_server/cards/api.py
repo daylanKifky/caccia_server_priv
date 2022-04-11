@@ -60,8 +60,6 @@ def cards_get():
 @bp.route('/', methods=('POST',))
 @auth_check_dashboard(redirect_to_login=True) 
 def populate_msg(uid):
-    # print("***** POST /cards cookies", request.cookies)
-    print("***** POST /cards x-access-tokens", getattr(request, "x-access-tokens", "NOT FOUND"))
 
     content = request.get_json()
     if not "mapimage" in content.keys():
@@ -77,9 +75,11 @@ def populate_msg(uid):
                       question = ?,
                       answer = ?,
                       mapimage = ?,
+                      postdata = ?,
                       modified = CURRENT_TIMESTAMP
                     WHERE id = ?;''', (content['image'], content['enigmatype'], 
-                    content['question'], content['answer'], content['mapimage'], content['id']))
+                    content['question'], content['answer'], content['mapimage'], 
+                    content["postdata"], content['id']))
         
         db.commit()
 
@@ -98,7 +98,6 @@ def populate_msg(uid):
 @bp.route('/image/', methods=('POST',)) 
 @auth_check_dashboard(redirect_to_login=True)
 def image(user=None):
-    print("***** POST /cards/image x-access-tokens", getattr(request, "x-access-tokens", "NOT FOUND"))
 
     try:
         if 'file' not in request.files:

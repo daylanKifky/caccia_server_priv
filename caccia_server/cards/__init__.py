@@ -122,7 +122,6 @@ def badges():
 			return render_template('cards/home.html')
 
 		play_time = request.form.get('play_time')
-		current_app.logger.info("####################################### {}".format(request.form) 	)
 		
 		enigma_key = None
 		try:
@@ -147,7 +146,6 @@ def badges():
 
 
 		tempres = db.execute("SELECT playtime from users WHERE id = ?", (c_uid,)).fetchone()
-		current_app.logger.info("-------------- {}".format(tempres[0]))
 
 	user_data = user.user_get_dict(c_uid)
 	if not user_data:
@@ -180,4 +178,5 @@ def badges():
 							back_to_card = back_to_card, 
 							new_badge= new_badge, 
 							user_badges= user_badges,
-							map_image= map_image)
+							map_image= map_image,
+							postdata = card_data[0]["postdata"])

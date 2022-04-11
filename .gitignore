@@ -7,3 +7,4 @@ caccia_server/static/content/*.jpg
 caccia_server/static/content/*.JPG
 caccia_server/static/content/*.JPEG
 caccia_server/static/content/*.PNG
+caccia_server/requirements.txt
