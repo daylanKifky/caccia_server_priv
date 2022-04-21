@@ -21,14 +21,36 @@ from .. user import create_user_in_db
 bp = Blueprint('users_analytics', __name__, url_prefix='/dashboard/users')
 
 
+# @bp.route('/drop', methods=('GET',)) 
+# @auth_check_dashboard(redirect_to_login=True)
+# def drop(user):
+# 	try:
+# 		db = get_db()
+# 		res = db.execute("DELETE FROM users")
+# 		db.commit()
+# 	except Exception as e:
+# 		err_id = ut.get_error_id()
+
+# 		current_app.logger.error('[ Truncate table users error | error_id: %s ] %s\n%s---' % (err_id, e, traceback.format_exc()) )
+
+# 		int_error = jsonify({"status": "error", "reason": "internal error", "error_id": err_id})
+# 		return make_response( int_error, 500 )
+
+# 	flash("Database dropped")
+# 	return redirect(url_for("users_analytics.index"))
+
 @bp.route('/', methods=('GET',)) 
 @auth_check_dashboard(redirect_to_login=True)
 def index(user):
 	pag = int(request.args.get("pag", 0))
 	ixpag = int(request.args.get("ixpag", 20))
 	uname = request.args.get("uname", "%")
-	# dateto = request.args.get("dateto", None)
-	# datefrom = request.args.get("datefrom", None)
+	days = request.args.get("days", "7")
+
+	try:
+		days = int(days) 
+	except:
+		days = 7
 
 	page_offset = pag * ixpag
 	like_uname = "%{}%".format(uname)
@@ -45,8 +67,9 @@ def index(user):
 		page_offset = page_offset if page_offset + ixpag < total_users else 0 
 
 		res = db.execute("""SELECT * FROM users 
-							WHERE username LIKE ? 
-							LIMIT ? OFFSET ?""", 
+							WHERE username LIKE ?
+							AND created BETWEEN datetime('now', '-{} days') AND datetime('now', 'localtime')
+							LIMIT ? OFFSET ?""".format(days), 
 							(like_uname, ixpag, page_offset ))
 		res = res.fetchall()
 

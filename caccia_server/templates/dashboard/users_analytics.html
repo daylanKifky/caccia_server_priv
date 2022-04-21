@@ -83,6 +83,8 @@ JSON
 		    	<form method="get" action="{{request.path}}" >
 					<label for="uname">Cerca username</label>
 					<input name="uname" value="{{request.args.get('uname', '')}}" style="margin-bottom: 0px;">
+					<label for="days">Vedi solo utenti creati negli ultimi giorni:</label>
+					<input type="number" id="days" name="days" min="0" max="365" value="{{request.args.get('days', '7')}}"/>
 					<input type="submit" value="Cerca">
 			    </form> 
 

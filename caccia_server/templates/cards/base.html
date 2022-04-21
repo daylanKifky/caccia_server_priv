@@ -25,14 +25,6 @@
   <nav id="top_nav" style="margin-bottom: 14px;">
     <img src="{{ url_for('static', filename='logo-explora.jpg') }}">
     <img style="margin-left:12px; width:140px" src="{{ url_for('static', filename='titolo.png') }}">
-    <!-- <ul>
-      {% if g.user %}
-        <li><span>{{ g.user['email'] }}</span>
-        <li><a href="{{ url_for('dashboard.logout') }}">[Log Out]</a>
-      {% else %}
-        <li><a href="{{ url_for('dashboard.login') }}">Log In</a>
-      {% endif %}
-    </ul> -->
   </nav>
 
   {% block navigation %}{% endblock %}
