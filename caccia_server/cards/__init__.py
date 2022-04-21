@@ -31,6 +31,40 @@ MAX_CARDS = 10
 def end():
 	return render_template('cards/end.html')
 
+
+@bp.route('/continue', methods=('GET',)) 
+def card_continue():
+	card_id = request.args.get('card_id')
+	c_uid = session.get('_caccia_user_id', None)
+
+	# render templates in case the request is not valid
+	if not c_uid:
+		return redirect(url_for("cards.index"))
+
+	if not card_id:
+		return redirect(url_for("cards.index"))
+
+	#convert card_id to int
+	try:
+		card_id = int(card_id)
+	except Exception as e:
+		flash("card_id should be an integer")
+		return render_template('cards/home.html')
+
+
+	map_image = "map_not_found.jpg"
+	map_image =  url_for('static', filename=map_image)
+ 
+	try:
+		card_data = api.cards_get_dict(card_id)
+		map_image = card_data[0]["mapimage"]
+	except Exception as e:
+		pass
+
+	return render_template('cards/continue.html', first_card=request.path+"?card_id=0", map_image= map_image)	
+
+
+
 @bp.route('/', methods=('GET',)) 
 def index():
 	card_id = request.args.get('card_id')
@@ -170,13 +204,17 @@ def badges():
 			return make_response( int_error, 500 )
 	
 		back_to_card = request.host_url+"?card_id={}".format(card_id)
+		scan = request.host_url+"continue?card_id={}".format(card_id)
+
 	else:
 		map_image = None
 		back_to_card = None
+		scan = None
 
 	return render_template('cards/badge.html',
 							back_to_card = back_to_card, 
 							new_badge= new_badge, 
 							user_badges= user_badges,
 							map_image= map_image,
-							postdata = card_data[0]["postdata"])
+							postdata = card_data[0]["postdata"],
+							scan = scan)
