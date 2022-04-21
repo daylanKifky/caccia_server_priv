@@ -1,7 +1,7 @@
 {% extends 'cards/index.html' %}
 
-{% block content %}
 {% block title %}Inizia{% endblock %}
+{% block content %}
 
 <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
 <script src="{{ url_for('static', filename='spin.min.js') }}"></script>
@@ -32,8 +32,7 @@
 </script>
 
 <div style="display: flex; flex-direction:column; align-items: center;">
-    <p id="introp" style="text-align: center;">Benvenuto nella caccia al tesoro!<br>Per iniziare tocca il pulsate in
-        basso.</p>
+    <p id="introp" style="text-align: center;">{{config["MESSAGES"]["benvenuto"] | safe}}</p> 
     <div style="margin-top:16px" id="spinner-area"></div>
     <div style="margin-top:12px; margin-bottom:8px; max-width: 500px;" id="qr-reader" style="width:90%"></div>
     <button style="width:100%" id="startbutton" class="submitanswerbutton">Scansiona ora!</button>
