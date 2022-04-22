@@ -65,7 +65,7 @@ def logout_user():
 	if session.get('_caccia_user_id', None):
 		session.pop('_caccia_user_id')
 		session.pop('_caccia_user_name')
-		flash("logout sucessful")
+		flash(current_app.config["MESSAGES"]["logout"])
 	return render_template('cards/init.html')
 
 def user_get_dict(uid):

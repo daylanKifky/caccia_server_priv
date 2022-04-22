@@ -210,6 +210,7 @@ def badges():
 		map_image = None
 		back_to_card = None
 		scan = None
+		card_data = [{"postdata":""}]
 
 	return render_template('cards/badge.html',
 							back_to_card = back_to_card, 

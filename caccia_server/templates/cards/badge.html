@@ -70,6 +70,8 @@
     {% endfor %}
   </div>
 </div>
+
+{% if new_badge != -1 %}
 <div>
   {{postdata | safe}}
 </div>
@@ -78,6 +80,7 @@
   <img style="width: 100%; max-width:400px" src="{{map_image}}" alt="">
   <p style="text-align: center;background: #d96a52;margin-top: 0px;color: white;padding: 2px;font-size: 14px;">Mappa del prossimo indizio</p>
 </div>
+{% endif %}
 
 
 {% endblock %}
