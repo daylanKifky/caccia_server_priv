@@ -39,6 +39,9 @@ bp = Blueprint('users_analytics', __name__, url_prefix='/dashboard/users')
 # 	flash("Database dropped")
 # 	return redirect(url_for("users_analytics.index"))
 
+TABLE_HEADER = ("id","nome utente","Iscritto il","ultimo login","prima risposta","tempo di gioco","1","2","3","4","5","6","7","8","9","10")
+
+
 @bp.route('/', methods=('GET',)) 
 @auth_check_dashboard(redirect_to_login=True)
 def index(user):
@@ -102,4 +105,5 @@ def index(user):
 
 	}
 
-	return render_template('dashboard/users_analytics.html', users=response, **page_links)
+
+	return render_template('dashboard/users_analytics.html', header = TABLE_HEADER, users=response, **page_links)

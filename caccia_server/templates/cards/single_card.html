@@ -43,7 +43,7 @@
 </style>
 
 <!-- Card content -->
-<div class="flash_error">Risposta sbagliata, riprova!</div>
+<div class="flash_error">{{config["MESSAGES"]["rispostasvagliata"] | safe}}</div>
 
 <img style="padding: 3px;min-width: 200px;width: 80%;max-width: 300px;border-radius: 14px;box-shadow:0px 1px 4px 0px #00000036;margin-top: 10px;" id="questionimage" src="{{card_data['image']}}" alt="">
 
@@ -53,7 +53,7 @@
     <p style="align-self:baseline; margin-bottom: 4px">{{card_data["question"].capitalize() | safe}}</p>
     <form style="width:100%" id="answerform" action="/badges?card_id={{card_data['id']}}" method="post">
       <input type="text" name="questionanswer" id="" autocomplete="off">
-      <input type="submit" class="submitanswerbutton" value="Invia risposta">
+      <input type="submit" class="submitanswerbutton" value="{{config['MESSAGES']['inviarisposta'] | safe}}">
       <input type="text" style="display:none" id="play_time" name="play_time" value="0">
     </form>
   <!-- Radio buttons answer enigma -->
@@ -72,7 +72,7 @@
         <input type="radio" id="option2" name="questionanswer" value="{{card_data['answer'].split('|')[2]}}">
         <label for="option2">{{card_data["answer"].split("|")[2]}}</label>
       </div>
-      <input type="submit" class="submitanswerbutton" value="Invia risposta">
+      <input type="submit" class="submitanswerbutton" value="{{config['MESSAGES']['inviarisposta'] | safe}}">
       <input type="text" style="display:none" id="play_time" name="play_time" value="0">
     </form>
   <!-- QR Code answer enigma -->
