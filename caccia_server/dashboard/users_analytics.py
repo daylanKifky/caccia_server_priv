@@ -72,6 +72,7 @@ def index(user):
 		res = db.execute("""SELECT * FROM users 
 							WHERE username LIKE ?
 							AND created BETWEEN datetime('now', '-{} days') AND datetime('now', 'localtime')
+							ORDER BY id DESC
 							LIMIT ? OFFSET ?""".format(days), 
 							(like_uname, ixpag, page_offset ))
 		res = res.fetchall()
