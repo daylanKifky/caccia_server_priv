@@ -15,7 +15,9 @@ see [here](https://medium.com/@prithvishetty/deploying-a-python-3-flask-app-into
 
 - `pipenv install`
 
-- place firebase.json in `instance` folder
+- place firebase.json in `instance` folder, rename `FIREBASE_CONF` value in `__init__.py`
+
+- place `firebaseConfig.js` in `caccia_server/static` folder
 
 - `pipenv run init`
 
