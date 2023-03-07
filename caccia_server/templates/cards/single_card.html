@@ -128,7 +128,7 @@
         radioanswerdom = answerform.querySelector(".radio-button input[type='radio']:checked + label")
         radioanswer = radioanswerdom.innerText.replace("'","")
         correctanswer = "{{correct_order_answers.split('|')[0].replace("'", "")}}"
-        if (radioanswer == correctanswer) {
+        if (radioanswer.trim() == correctanswer.trim()) {
           endtime = window.performance.now();
           event.preventDefault()
           var playtime = endtime - starttime;
