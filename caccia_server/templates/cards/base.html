@@ -1,7 +1,7 @@
 <!doctype html>
 
 <head>
-  <title>{% block title %}{% endblock %} - Caccia al tesoro</title>
+  <title>{% block title %}{% endblock %} - Stem Challenge</title>
   <link rel="icon" type="image/x-icon" href="https://www.mdbr.it/favicon.ico">
   <!-- 
   <link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', filename='apple-touch-icon.png') }}">
@@ -23,8 +23,8 @@
 
 <body>
   <nav id="top_nav" style="margin-bottom: 14px;">
-    <img src="{{ url_for('static', filename='logo-explora.jpg') }}">
-    <img style="margin-left:12px; width:140px" src="{{ url_for('static', filename='titolo.png') }}">
+    <img src="{{ url_for('static', filename='logo_intestazione.png') }}">
+    <!-- <img style="margin-left:12px; width:140px" src="{{ url_for('static', filename='titolo.png') }}"> -->
   </nav>
 
   {% block navigation %}{% endblock %}

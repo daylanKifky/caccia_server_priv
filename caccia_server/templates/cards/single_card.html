@@ -82,7 +82,7 @@
     <div style="margin-top:16px" id="spinner-area"></div>
     <div style="margin-top:12px; margin-bottom:8px" id="qr-reader" style="width:90%"></div>
     <button style="width:100%" id="startbutton" class="submitanswerbutton">Start scan</button>
-    <button id="scanbutton" class="scanqrbutton">No QR</button>
+    <button id="scanbutton" class="scanqrbutton">NO QR</button>
 
   </div>
   {% endif %}
@@ -178,7 +178,7 @@
                       cameraId,
                       {
                           fps: 10,    // Optional, frame per seconds for qr code scanning
-                          qrbox: { width: 500, height: 500 }  // Optional, if you want bounded box UI
+                          qrbox: { width: 500, height: 300 }  // Optional, if you want bounded box UI
                       },
                       (decodedText, decodedResult) => {
                           scanbutton.style.backgroundColor = "#01b615"
@@ -188,7 +188,7 @@
                       (errorMessage) => {
                           lastQRDecoded = null
                           scanbutton.style.backgroundColor = "#3a3737f5"
-                          scanbutton.innerText = "No QR"
+                          scanbutton.innerText = "NO QR"
 
                       })
                       .then(

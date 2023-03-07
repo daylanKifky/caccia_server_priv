@@ -36,7 +36,7 @@
     
 </div>
 
-<div style="display: flex; flex-direction:column; justify-content: center; margin-bottom: 20px; font-weight: normal; color: rgb(134, 134, 134)">
+<div id="mappa" style="display: flex; flex-direction:column; justify-content: center; margin-bottom: 20px; font-weight: normal; color: rgb(134, 134, 134)">
   <img style="width: 100%; max-width:400px" src="{{map_image}}" alt="">
   <p style="text-align: center;background: #d96a52;margin-top: 0px;color: white;padding: 2px;font-size: 14px;">Mappa del prossimo indizio</p>
 </div>
@@ -83,18 +83,19 @@
                         {facingMode: "environment"},
                         {
                             fps: 10,    // Optional, frame per seconds for qr code scanning
-                            qrbox: { width: 500, height: 500 }  // Optional, if you want bounded box UI
+                            qrbox: { width: 500, height: 300 }  // Optional, if you want bounded box UI
                         },
                         (decodedText, decodedResult) => {
                             scanbutton.style.backgroundColor = "#01b615"
                             lastQRDecoded = decodedText
-                            scanbutton.innerText = "Scan!"
+                            scanbutton.innerText = "Codice OK"
+                            window.location.href = lastQRDecoded
 
                         },
                         (errorMessage) => {
                             lastQRDecoded = null
                             scanbutton.style.backgroundColor = "#3a3737f5"
-                            scanbutton.innerText = "No QR"
+                            scanbutton.innerText = "NO QR"
                         })
                         .then(
                             // Start succeeded 
