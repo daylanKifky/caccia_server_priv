@@ -17,12 +17,12 @@
 
 <body>
   <nav id="top_nav">
-    <img src="{{ url_for('static', filename='logo_intestazione_dash.png') }}">
-    <h1>Gestione contenuti</h1>
+    <img src="{{ url_for('static', filename='logo-explora.jpg') }}">
+    <h1>Dashboard</h1>
     <ul style="align-items: center;">
       {% if g.user %}
         <li><span>{{ g.user['email'] }}</span></li>
-        <li><a class="submitanswerbutton" style="background: #2b3654; border-radius: 0px; color: #f2f2f2; text-decoration: none; font-weight:300; font-size:12px" href="{{ url_for('dashboard.logout') }}">Esci</a></li>
+        <li><a class="submitanswerbutton" style="background: #ca4b64; text-decoration: none; font-weight:300; font-size:12px" href="{{ url_for('dashboard.logout') }}">Logout</a></li>
       {% endif %}
     </ul>
   </nav>

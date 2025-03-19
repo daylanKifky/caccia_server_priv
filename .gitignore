@@ -13,3 +13,19 @@ caccia_server/static/content/*.PNG
 caccia_server/static/firebaseConfig.js
 
 caccia_server/requirements.txt
+
+__pycache__
+*.pyc
+
+**/cards-
+
+**/rewards-old
+**/rewards_mid
+**/rewards/r*.png
+
+*.css_old
+*.css_or
+*.html_
+*.html-ingressa
+
+

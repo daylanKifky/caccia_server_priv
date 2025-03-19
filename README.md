@@ -17,7 +17,7 @@ see [here](https://medium.com/@prithvishetty/deploying-a-python-3-flask-app-into
 
 - place firebase.json in `instance` folder, rename `FIREBASE_CONF` value in `__init__.py`
 
-- place `firebaseConfig.js` in `caccia_server/static` folder
+- place `firebaseConfig.js` in `caccia_server/static` folder or replace the contents of the firebaseConfig var in `templates/auth/login.html`
 
 - `pipenv run init`
 

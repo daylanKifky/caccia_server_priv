@@ -1,11 +1,10 @@
 html {
-	font-family: 'Rubik', sans-serif;
+	font-family: 'Roboto', sans-serif;
 	font-weight: 100;
 	padding: 1rem;
 	background-color: #ebebf1;
-	background-image: radial-gradient(#3eb1b1aa 0.65px, #ebebf1 0.65px);
-	background-size: 13px 13px;
-	color: #959595;
+	background-image: url(/static/bg_app.jpg);
+	color: #494949;
 }
 
 strong {
@@ -32,12 +31,12 @@ strong {
 
 body {
 	/*! max-width: 960px; */
-	margin: 0 10px;
-	background: white;
-	border-radius: 15px;
-	box-shadow: 0px 3px 6px 3px #0000001c;
-	padding: 20px;
-	opacity: 0.9;
+    margin: 0 10px;
+    background: white;
+    border:10px solid #FF9800;
+    border-radius: 15px;
+    padding: 10px;
+
 }
 
 h1 {
@@ -386,13 +385,13 @@ details[open] {
 }
 
 .submitanswerbutton {
-	background: #3d93b6;
-	border-width: 0px;
-	color: white;
-	padding: 8px;
-	box-shadow: 0px 4px 8px 0px #6fafd187;
-	font-weight: bold;
-	border-radius: 15px;
+    background: #b91509;
+    border-width: 0px;
+    color: white;
+    padding: 10px;
+    box-shadow: 0px 4px 8px 0px #6fafd187;
+    font-weight: bold;
+    border-radius: 10px;
 }
 
 .usermenubutton {
@@ -416,12 +415,16 @@ details[open] {
 }
 
 .radio-button label {
-	display: inline-block;
-	background-color: #d1d1d1;
-	padding: 3px 8px;
-	/*! font-family: Arial; */
-	flex: 1;
-	box-shadow: 0px 2px 0px #2d2a2a4f;
+
+    display: inline-block;
+    background-color: #ffc731;
+    padding: 3px 8px;
+    color: black;
+    font-size: large;
+    border-radius: 6px;
+    flex: 1;
+    text-align: center;
+
 }
 
 .radio-button input[type="radio"]:checked+label {

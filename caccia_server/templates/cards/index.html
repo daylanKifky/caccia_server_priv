@@ -4,7 +4,7 @@
 
   <div id="temp user block" style="display: flex;align-items: center;">
     {% if session.get('_caccia_user_id', None)%}
-    <p class="nome" style="flex:1; color: #3d93b6; font-weight: bold">{{session.get('_caccia_user_name', None)}} <span class="userid"><small>({{ "{:05d}".format(session.get('_caccia_user_id', None)) }})</small></span></p>
+    <p style="flex:1; color: #3d93b6; font-weight: bold">{{session.get('_caccia_user_name', None)}} <small>({{ "{:05d}".format(session.get('_caccia_user_id', None)) }})</small></p>
     {# NOTE: The user id should be shown!! don't toglierlo alrait? #}
     <a class="usermenubutton" href="/">Home</a>
     <a class="usermenubutton" href="/badges?card_id=0">Trofei</a>

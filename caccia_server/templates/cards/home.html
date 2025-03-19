@@ -3,8 +3,8 @@
 {% block title %}Inizia{% endblock %}
 {% block content %}
 
-<script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
 <script src="{{ url_for('static', filename='spin.min.js') }}"></script>
+<script src="{{ url_for('static', filename='html5-qrcode.min.js') }}"></script>
 <script>
     let spinner_opts = {
         lines: 13,
@@ -34,10 +34,11 @@
 <div style="display: flex; flex-direction:column; align-items: center;">
     <p id="introp" style="text-align: center;">{{config["MESSAGES"]["benvenuto"] | safe}}</p> 
     <div style="margin-top:16px" id="spinner-area"></div>
+    <div style=""></div>
     <div style="margin-top:12px; margin-bottom:8px; max-width: 500px;" id="qr-reader" style="width:90%"></div>
     <button style="width:100%" id="startbutton" class="submitanswerbutton">Scansiona ora!</button>
     <button id="scanbutton" class="scanqrbutton">{{config["MESSAGES"]["scanbutton"] | safe}}</button>
-    <!-- <img id="map" src="https://www.mdbr.it/mappa.jpg"> -->
+
 </div>
 
 

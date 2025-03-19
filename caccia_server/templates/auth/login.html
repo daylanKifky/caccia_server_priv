@@ -9,15 +9,23 @@
 	<script src="https://www.gstatic.com/firebasejs/7.21.0/firebase-app.js"></script>
 	<script src="https://www.gstatic.com/firebasejs/7.21.0/firebase-auth.js"></script>
 	<script src="{{ url_for('static', filename='spin.min.js') }}"></script>
-  <script src="{{ url_for('static', filename='firebaseConfig.js') }}"></script>
-	
 	<script>
 
 		// function flash_message(msg){
 		// 	let container = document.querySelector(".content");
 		// 	let el = `<div class="flash">{{ msg }}</div>`;
 		// }
-
+		// see: https://firebase.google.com/docs/web/setup#config-object
+		// https://support.google.com/firebase/answer/7015592?authuser=3
+		const firebaseConfig = {
+	    apiKey: "AIzaSyAmaGMQfUpHRfWw9LjxrhKQyFZGIL7DH-c",
+	    authDomain: "caccia-3e3b3.firebaseapp.com",
+	    projectId: "caccia-3e3b3",
+	    storageBucket: "caccia-3e3b3.appspot.com",
+	    messagingSenderId: "753526438592",
+	    appId: "1:753526438592:web:6dfab36cd22305bdf50b25",
+	    measurementId: "G-QZ50X2FPZN"
+	  };
 
 
 	    firebase.initializeApp(firebaseConfig);
