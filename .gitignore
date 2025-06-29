@@ -13,3 +13,5 @@ caccia_server/static/content/*.PNG
 caccia_server/static/firebaseConfig.js
 
 caccia_server/requirements.txt
+
+*.pyc
