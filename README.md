@@ -1,30 +1,51 @@
 # CACCIA app server v1.0.0
 Tested and running in VPS with Ubuntu Server 18.04 LTS
 
-## WSGI with apache
+## System Dependencies
 
-- Send project to VPS, after setting DEPLOY_VARS.sh
-`./deploy.sh`
+Install required system packages for Cairo:
+```bash
+sudo apt install libapr1 libaprutil1 libxcb-cursor0 libxcb-damage0
+```
 
-- Connect with ssh to server and..
-`~/install_caccia_apache.sh`
+## Installation
 
-see [here](https://medium.com/@prithvishetty/deploying-a-python-3-flask-app-into-aws-using-apache2-wsgi-1b26ed29c6c2) for more info. 
+Create and activate virtual environment:
+```bash
+python3 -m venv venv
+source venv/bin/activate
+```
 
-## Dev installation:
+Install dependencies:
+```bash
+pip install -e .
+```
 
-- `pipenv install`
+## Configuration
 
-- place firebase.json in `instance` folder, rename `FIREBASE_CONF` value in `__init__.py`
+- Place `firebase.json` in `instance` folder, rename `FIREBASE_CONF` value in `__init__.py`
+- Place `firebaseConfig.js` in `caccia_server/static` folder
 
-- place `firebaseConfig.js` in `caccia_server/static` folder
+## Initialize Database
 
-- `pipenv run init`
+```bash
+export FLASK_APP=caccia_server
+export FLASK_ENV=development
+flask init-db
+```
 
-## Dev sever:
+## Development Server
 
-Only local version in port 5000:
-- `pipenv run dev_server`
+Local server (port 5000):
+```bash
+export FLASK_APP=caccia_server
+export FLASK_ENV=development
+flask run
+```
 
-Remote with no reloads in port 5001
-- `pipenv run dev_server_remote`
+Remote server (port 5001):
+```bash
+export FLASK_APP=caccia_server
+export FLASK_ENV=development
+flask run --host=0.0.0.0 --port=5001 --no-reload
+```
