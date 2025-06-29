@@ -1,5 +1,6 @@
 # import datetime
 import traceback
+import os
 
 import random
 
@@ -8,7 +9,8 @@ import random
 from flask import (
 	Blueprint, current_app, g, redirect, 
 	render_template, request, url_for, 
-	make_response, jsonify, session, flash
+	make_response, jsonify, session, flash,
+	send_file
 )
 from werkzeug.exceptions import abort
 from os.path import join
@@ -16,6 +18,7 @@ from os.path import join
 from ..db import get_db, sqlite3
 # from ..auth import auth_check_dashboard, User
 from .. import utils as u
+from ..svg_to_pdf import create_certificate_pdf
 
 # from . import cards_manager
 # from . import users_analytics
@@ -220,3 +223,42 @@ def badges():
 							postdata = card_data[0]["postdata"],
 							scan = scan,
 							game_completed = all(user_badges))
+
+
+@bp.route('/test/download-pdf', methods=('GET',))
+def test_download_pdf():
+	"""Test endpoint to download certificate PDF - only works in debug mode"""
+	if not current_app.debug:
+		abort(404)
+	
+	username = request.args.get('username', 'Test User')
+	
+	try:
+		# Get template path from config
+		template_path = os.path.join(current_app.static_folder, current_app.config['ATTESTATO_TEMPLATE'])
+		
+		# Create the certificate PDF
+		pdf_path = create_certificate_pdf(username, template_path)
+		
+		# Send file and clean up after sending
+		def remove_file(response):
+			try:
+				os.unlink(pdf_path)
+			except Exception:
+				pass
+			return response
+		
+		response = send_file(
+			pdf_path,
+			as_attachment=True,
+			download_name=f'certificate_{username.replace(" ", "_")}.pdf',
+			mimetype='application/pdf'
+		)
+		response.call_on_close(lambda: os.unlink(pdf_path) if os.path.exists(pdf_path) else None)
+		
+		return response
+		
+	except Exception as e:
+		err_id = u.get_error_id()
+		current_app.logger.error('[ PDF generation error | error_id: %s ] %s\n%s---' % (err_id, e, traceback.format_exc()))
+		return make_response(jsonify({"status": "error", "reason": "PDF generation failed", "error_id": err_id}), 500)

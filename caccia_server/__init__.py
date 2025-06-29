@@ -17,16 +17,13 @@ def create_app(test_config=None):
     # create and configure the app
     app = Flask(__name__, instance_relative_config=True, static_url_path='/static')
     app.config.from_mapping(
-        SECRET_KEY='deva',
+        SECRET_KEY='dor7230nrnqd71c3rF$^3@#fa@dsa',
         DATABASE=os.path.join(app.instance_path, 'caccia_db.sqlite'),
         FIREBASE_CONF=os.path.join(app.instance_path, 'caccia-3e3b3-firebase-adminsdk-laqso-580a1fec1b.json'),
-        # MIN_TIME_REQUESTS = 0.8,
-        # FAKE_USERS = 100,
-        # MAX_CSV_LINES = 100,
         ALLOWED_IMGS_EXT = ['.jpg', '.jpeg', '.JPG', '.JPEG', '.PNG', '.png'],
         ALLOWED_IMGS_TYPES = ['png', 'jpeg'],
         MAX_IMG_SIZE = 2 * 1024 * 1024, # 2Mb
-        # DASHBOARD_USER_CSV = 'dashboard_users.csv'
+        ATTESTATO_TEMPLATE = os.path.join(app.static_folder, 'attestato_malborghetto_export.svg')
     )
 
 

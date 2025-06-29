@@ -10,11 +10,8 @@ ipython = "*"
 
 [packages]
 flask = "*"
-pytest = "*"
-coverage = "*"
 firebase-admin = "*"
-jsonschema = "*"
-requests = "*"
+cairosvg = "*"
 
 [requires]
 python_version = "3.6"
