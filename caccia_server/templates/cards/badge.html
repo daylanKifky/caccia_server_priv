@@ -42,13 +42,19 @@
 <p style="display: none"><strong>BACK_TO_CARD:</strong> {{back_to_card}}</p>
 <p style="display: none"><strong>MAP_IMAGE:</strong> {{map_image}}</p>
 
-{% if new_badge != -1 %}
-  <p style="font-weight: bold;">{{config["MESSAGES"]["winbadge"] | safe}}</p>
-  <div class="flash" style="padding:8px; color: white; display: flex;flex-direction: column;align-items: center; ">
-    
-    <img class="badge_main" src="static/rewards/{{new_badge+1}}.png" alt="" style="width: 50%; max-width:200px">
-    <a href="{{scan}}" class="submitanswerbutton" style="text-shadow: none; text-decoration:none; padding: 10px">{{config["MESSAGES"]["continuabutton"] | safe}}</a>
+{% if game_completed %}
+  <div class="flash" style="padding:30px 20px; margin: 20px 0; background: linear-gradient(135deg, #da7661, #e68b75); color: white; display: flex;flex-direction: column;align-items: center; border: 3px solid #fff;">
+    <p style="font-weight: bold; font-size: 20px; margin-bottom: 20px; text-align: center;">{{config["MESSAGES"]["game_completed"] | safe}}</p>
+    <a href="#" class="submitanswerbutton" style="text-decoration:none; padding: 15px 30px; font-size: 18px; font-weight: bold; background: rgba(255,255,255,0.2); border: 2px solid white; transition: all 0.3s ease; box-shadow: none;">{{config["MESSAGES"]["attestato"] | safe}}</a>
   </div>
+{% elif new_badge != -1 %}
+  
+    <p style="font-weight: bold;">{{config["MESSAGES"]["winbadge"] | safe}}</p>
+    <div class="flash" style="padding:8px; color: white; display: flex;flex-direction: column;align-items: center; ">
+      
+      <img class="badge_main" src="static/rewards/{{new_badge+1}}.png" alt="" style="width: 50%; max-width:200px">
+      <a href="{{scan}}" class="submitanswerbutton" style="text-shadow: none; text-decoration:none; padding: 10px">{{config["MESSAGES"]["continuabutton"] | safe}}</a>
+    </div>
 {% endif %}
 <div>
 

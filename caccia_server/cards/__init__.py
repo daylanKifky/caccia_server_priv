@@ -182,7 +182,6 @@ def badges():
 		tempres = db.execute("SELECT playtime from users WHERE id = ?", (c_uid,)).fetchone()
 
 	user_data = user.user_get_dict(c_uid)
-	print(user_data)
 	if not user_data:
 		return render_template('cards/init.html', first_card=request.host_url+"?card_id=0")
 
@@ -219,4 +218,5 @@ def badges():
 							user_badges= user_badges,
 							map_image= map_image,
 							postdata = card_data[0]["postdata"],
-							scan = scan)
+							scan = scan,
+							game_completed = all(user_badges))
