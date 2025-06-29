@@ -214,7 +214,7 @@ def badges():
 		back_to_card = None
 		scan = None
 		card_data = [{"postdata":""}]
-
+	
 	return render_template('cards/badge.html',
 							back_to_card = back_to_card, 
 							new_badge= new_badge, 
@@ -223,6 +223,55 @@ def badges():
 							postdata = card_data[0]["postdata"],
 							scan = scan,
 							game_completed = all(user_badges))
+
+
+@bp.route('/attestato', methods=('GET',))
+def download_attestato():
+	"""Download certificate PDF - only for users who completed all challenges"""
+	c_uid = session.get('_caccia_user_id', None)
+	
+	# Check if user is logged in
+	if not c_uid:
+		return make_response(jsonify({"status": "error", "reason": "User not authenticated"}), 401)
+	
+	# Get user data to check if all badges are completed
+	user_data = user.user_get_dict(c_uid)
+	if not user_data:
+		return make_response(jsonify({"status": "error", "reason": "User not found"}), 404)
+	
+	user_badges = [user_data["enigma0"], user_data["enigma1"], user_data["enigma2"],
+					user_data["enigma3"], user_data["enigma4"], user_data["enigma5"],
+					user_data["enigma6"], user_data["enigma7"], user_data["enigma8"],
+					user_data["enigma9"]]
+	
+	# Check if all badges are completed
+	if not all(user_badges):
+		return make_response(jsonify({"status": "error", "reason": "All challenges must be completed to download certificate"}), 403)
+	
+	username = user_data.get('username', 'Utente')
+	
+	try:
+		# Get template path from config
+		template_path = os.path.join(current_app.static_folder, current_app.config['ATTESTATO_TEMPLATE'])
+		
+		# Create the certificate PDF
+		pdf_path = create_certificate_pdf(username, template_path)
+		
+		# Send file and clean up after sending
+		response = send_file(
+			pdf_path,
+			as_attachment=True,
+			download_name=f'attestato_{username.replace(" ", "_")}.pdf',
+			mimetype='application/pdf'
+		)
+		response.call_on_close(lambda: os.unlink(pdf_path) if os.path.exists(pdf_path) else None)
+		
+		return response
+		
+	except Exception as e:
+		err_id = u.get_error_id()
+		current_app.logger.error('[ PDF generation error | error_id: %s ] %s\n%s---' % (err_id, e, traceback.format_exc()))
+		return make_response(jsonify({"status": "error", "reason": "PDF generation failed", "error_id": err_id}), 500)
 
 
 @bp.route('/test/download-pdf', methods=('GET',))
@@ -241,13 +290,6 @@ def test_download_pdf():
 		pdf_path = create_certificate_pdf(username, template_path)
 		
 		# Send file and clean up after sending
-		def remove_file(response):
-			try:
-				os.unlink(pdf_path)
-			except Exception:
-				pass
-			return response
-		
 		response = send_file(
 			pdf_path,
 			as_attachment=True,

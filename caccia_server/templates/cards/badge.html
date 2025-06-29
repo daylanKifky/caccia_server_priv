@@ -45,7 +45,7 @@
 {% if game_completed %}
   <div class="flash" style="padding:30px 20px; margin: 20px 0; background: linear-gradient(135deg, #da7661, #e68b75); color: white; display: flex;flex-direction: column;align-items: center; border: 3px solid #fff;">
     <p style="font-weight: bold; font-size: 20px; margin-bottom: 20px; text-align: center;">{{config["MESSAGES"]["game_completed"] | safe}}</p>
-    <a href="#" class="submitanswerbutton" style="text-decoration:none; padding: 15px 30px; font-size: 18px; font-weight: bold; background: rgba(255,255,255,0.2); border: 2px solid white; transition: all 0.3s ease; box-shadow: none;">{{config["MESSAGES"]["attestato"] | safe}}</a>
+    <a href="{{ url_for('cards.download_attestato') }}" target="_blank" class="submitanswerbutton" style="text-decoration:none; padding: 15px 30px; font-size: 18px; font-weight: bold; background: rgba(255,255,255,0.2); border: 2px solid white; transition: all 0.3s ease; box-shadow: none;">{{config["MESSAGES"]["attestato"] | safe}}</a>
   </div>
 {% elif new_badge != -1 %}
   
@@ -89,6 +89,16 @@
 </div>
 {% endif %}
 
+{% if config.DEBUG %}
+<div style="margin-top: 30px; padding: 20px; background-color: #f0f0f0; border: 2px dashed #ccc; text-align: center;">
+  <p style="color: #666; font-size: 14px; margin-bottom: 15px;"><strong>DEBUG MODE - Jump to Card</strong></p>
+  <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 8px;">
+    {% for card_num in range(10) %}
+      <a href="{{ url_for('cards.index') }}?card_id={{ card_num }}" class="submitanswerbutton" style="text-decoration:none; padding: 8px 12px; font-size: 14px; background: #007bff; border: 2px solid #007bff; color: white; min-width: 40px;">{{ card_num }}</a>
+    {% endfor %}
+  </div>
+</div>
+{% endif %}
 
 {% endblock %}
 {% endif %}

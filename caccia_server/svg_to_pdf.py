@@ -3,6 +3,7 @@ import cairosvg
 import tempfile
 import os
 import re
+from flask import current_app
 
 def create_certificate_pdf(username, template_path):
     """
@@ -52,10 +53,10 @@ def _modify_svg_and_export_pdf(input_svg_path, new_username, output_pdf_path):
     
     if match:
         old_text = match.group(2)
-        print(f"Found current username (direct text): '{old_text.strip()}'")
+        current_app.logger.debug(f"Found current username (direct text): '{old_text.strip()}'")
         # Replace the text content
         modified_svg = re.sub(direct_text_pattern, rf'\g<1>{new_username}\g<3>', svg_content, flags=re.DOTALL)
-        print(f"Updated username to: '{new_username}'")
+        current_app.logger.debug(f"Updated username to: '{new_username}'")
     else:
         # Fallback: Look for text in tspan element within element with id="username"
         tspan_pattern = r'(<text[^>]*id="username"[^>]*>.*?<tspan[^>]*>)([^<]*)(</tspan>)'
@@ -63,12 +64,12 @@ def _modify_svg_and_export_pdf(input_svg_path, new_username, output_pdf_path):
         
         if match:
             old_text = match.group(2)
-            print(f"Found current username (tspan): '{old_text.strip()}'")
+            current_app.logger.debug(f"Found current username (tspan): '{old_text.strip()}'")
             # Replace the text content
             modified_svg = re.sub(tspan_pattern, rf'\g<1>{new_username}\g<3>', svg_content, flags=re.DOTALL)
-            print(f"Updated username to: '{new_username}'")
+            current_app.logger.debug(f"Updated username to: '{new_username}'")
         else:
-            print("Warning: Could not find element with id='username'")
+            current_app.logger.debug("Warning: Could not find element with id='username'")
             modified_svg = svg_content
     
     # Write modified SVG to temporary file
@@ -79,10 +80,10 @@ def _modify_svg_and_export_pdf(input_svg_path, new_username, output_pdf_path):
     try:
         # Convert SVG to PDF using cairosvg
         cairosvg.svg2pdf(url=temp_svg_path, write_to=output_pdf_path)
-        print(f"PDF exported successfully to: {output_pdf_path}")
+        current_app.logger.debug(f"PDF exported successfully to: {output_pdf_path}")
         
     except Exception as e:
-        print(f"Error converting to PDF: {e}")
+        current_app.logger.debug(f"Error converting to PDF: {e}")
         raise e
     
     finally:
